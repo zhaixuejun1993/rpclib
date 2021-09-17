@@ -5,8 +5,10 @@
 #include "rpc/this_handler.h"
 #include "rpc/this_server.h"
 #include "rpc/this_session.h"
+#include "rpc/ITTProfiler.h"
 
 #include "rpc/detail/log.h"
+#include <iostream>
 
 namespace rpc {
 namespace detail {
@@ -34,11 +36,6 @@ void server_session::start() { do_read(); }
 void server_session::close() {
     LOG_INFO("Closing session.");
     async_writer::close();
-
-    auto self(shared_from_base<server_session>());
-    write_strand().post([this, self]() {
-        parent_->close_session(self);
-    });
 }
 
 void server_session::do_read() {
@@ -50,88 +47,11 @@ void server_session::do_read() {
         // (since it's constexpr), but MSVC insists.
         read_strand_.wrap([this, self, max_read_bytes](std::error_code ec,
                                                        std::size_t length) {
-            if (is_closed()) { return; }
-            if (!ec) {
-                pac_.buffer_consumed(length);
-                RPCLIB_MSGPACK::unpacked result;
-                while (pac_.next(result) && !is_closed()) {
-                    auto msg = result.get();
-                    output_buf_.clear();
-
-                    // any worker thread can take this call
-                    auto z = std::shared_ptr<RPCLIB_MSGPACK::zone>(
-                        result.zone().release());
-                    io_->post([this, self, msg, z]() {
-                        this_handler().clear();
-                        this_session().clear();
-                        this_session().set_id(reinterpret_cast<session_id_t>(this));
-                        this_server().cancel_stop();
-
-                        auto resp = disp_->dispatch(msg, suppress_exceptions_);
-
-                        // There are various things that decide what to send
-                        // as a response. They have a precedence.
-
-                        // First, if the response is disabled, that wins
-                        // So You Get Nothing, You Lose! Good Day Sir!
-                        if (!this_handler().resp_enabled_) {
-                            return;
-                        }
-
-                        // Second, if there is an error set, we send that
-                        // and only third, if there is a special response, we
-                        // use it
-                        if (!this_handler().error_.get().is_nil()) {
-                            LOG_WARN("There was an error set in the handler");
-                            resp.capture_error(this_handler().error_);
-                        } else if (!this_handler().resp_.get().is_nil()) {
-                            LOG_WARN("There was a special result set in the "
-                                     "handler");
-                            resp.capture_result(this_handler().resp_);
-                        }
-
-                        if (!resp.is_empty()) {
-#ifdef _MSC_VER
-                            // doesn't compile otherwise.
-                            write_strand().post(
-                                [=]() { write(resp.get_data()); });
-#else
-                            write_strand().post(
-                                [this, self, resp, z]() { write(resp.get_data()); });
-#endif
-                        }
-
-                        if (this_session().exit_) {
-                            LOG_WARN("Session exit requested from a handler.");
-                            // posting through the strand so this comes after
-                            // the previous write
-                            write_strand().post([this]() { close(); });
-                        }
-
-                        if (this_server().stopping()) {
-                            LOG_WARN("Server exit requested from a handler.");
-                            // posting through the strand so this comes after
-                            // the previous write
-                            write_strand().post(
-                                [this]() { parent_->close_sessions(); });
-                        }
-                    });
-                }
-
-                if (!is_closed()) {
-                    // resizing strategy: if the remaining buffer size is
-                    // less than the maximum bytes requested from asio,
-                    // then request max_read_bytes. This prompts the unpacker
-                    // to resize its buffer doubling its size
-                    // (https://github.com/msgpack/msgpack-c/issues/567#issuecomment-280810018)
-                    if (pac_.buffer_capacity() < max_read_bytes) {
-                        LOG_TRACE("Reserving extra buffer: {}", max_read_bytes);
-                        pac_.reserve_buffer(max_read_bytes);
-                    }
-                    do_read();
-                }
-            } else if (ec == RPCLIB_ASIO::error::eof ||
-                       ec == RPCLIB_ASIO::error::connection_reset) {
+            if (is_closed()) {
+                return;
+            }
+            if (ec == RPCLIB_ASIO::error::eof ||
+                ec == RPCLIB_ASIO::error::connection_reset) {
                 LOG_INFO("Client disconnected");
                 self->close();
             } else {
@@ -140,5 +60,88 @@ void server_session::do_read() {
         }));
 }
 
-} /* detail */
-} /* rpc */
+server_ipc_session::server_ipc_session(std::shared_ptr<dispatcher> disp,
+                                       int thread_size,
+                                       bool suppress_exceptions)
+    : disp_(std::move(disp)), suppress_exceptions_(suppress_exceptions) {
+    for (int i = 0; i < thread_size; i++) {
+        task_threads_.emplace_back([this]() {
+            while (!stop_task_) {
+                std::shared_ptr<std::function<void()>> task;
+                {
+                    ITT_PROFILING_TASK("server.task.dequeue");
+                    std::unique_lock<std::mutex> lock(task_queue_mutex_);
+                    task_queue_not_empty_.wait(lock, [this]() {
+                        return !task_queue_.empty() || stop_task_;
+                    });
+                    if (stop_task_) {
+                        break;
+                    }
+                    task = task_queue_.front();
+                    task_queue_.pop();
+                }
+                (*task)();
+            }
+        });
+    };
+}
+
+server_ipc_session::~server_ipc_session() {
+    stop_task_ = true;
+    task_queue_not_empty_.notify_all();
+    for (auto &task : task_threads_) {
+        if (task.joinable()) {
+            task.join();
+        }
+    }
+};
+
+void server_ipc_session::do_read(const rpc::Connection::Ptr &ipcConnection) {
+    std::shared_ptr<RPCLIB_MSGPACK::unpacker> message =
+        std::make_shared<RPCLIB_MSGPACK::unpacker>();
+    {
+        ITT_PROFILING_TASK("server.ipc.read");
+        size_t length = 0;
+        std::lock_guard<std::mutex> lock(read_mutex_);
+        if (!ipcConnection->read(&length, sizeof(length))) {
+            LOG_ERROR("read ipc length error");
+            return;
+        }
+
+        if (length <= 0) {
+            LOG_ERROR("invalid ipc length error");
+            return;
+        }
+
+        message->reserve_buffer(length);
+
+        if (!ipcConnection->read(message->buffer(), static_cast<int>(length))) {
+            LOG_ERROR("read ipc error");
+            return;
+        }
+        message->buffer_consumed(length);
+        LOG_TRACE("ipc read from connection {}, size {}",
+                  ipcConnection->getId(), length);
+    }
+
+    {
+        ITT_PROFILING_TASK("server.task.enqueue");
+        std::lock_guard<std::mutex> task_lock(task_queue_mutex_);
+        task_queue_.push(std::make_shared<std::function<void()>>(
+            [this, message, ipcConnection]() {
+                RPCLIB_MSGPACK::unpacked result;
+                while (message->next(result)) {
+                    auto msg = result.get();
+                    ITT_PROFILING_TASK("server.dispatch");
+                    auto resp = disp_->dispatch(msg, suppress_exceptions_);
+                    if (!resp.is_empty()) {
+                        ITT_PROFILING_TASK("server.ipc.write");
+                        write(resp.get_data(), *ipcConnection);
+                    }
+                }
+            }));
+        task_queue_not_empty_.notify_one();
+    }
+}
+} // namespace detail
+} // namespace rpc

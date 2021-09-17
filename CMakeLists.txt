@@ -30,6 +30,16 @@ option(RPCLIB_MSVC_STATIC_RUNTIME
   "MSVC only: build with /MT instead of /MD" 
   OFF)
 
+option(ENABLE_ITT "Parameter to enable itt tracer" ON)
+
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/configs)
+
+if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
+  set(ARM_ENV ON)
+else ()
+  set(X86_ENV ON)
+endif ()
+
 #
 # Other configuration values
 #
@@ -90,6 +100,14 @@ set(DEP_SOURCES
   ${RPCLIB_DEPENDENCIES}/src/format.cc
   ${RPCLIB_DEPENDENCIES}/src/posix.cc)
 
+if (MSVC)
+  SET(IPC_SRC lib/rpc/platform/windows/IPC.cpp)
+else()
+  SET(IPC_SRC lib/rpc/platform/linux/IPC.cpp)
+endif()
+
+add_subdirectory(thirdparty/ittnotify)
+
 add_library(${PROJECT_NAME}
   lib/rpc/dispatcher.cc
   lib/rpc/server.cc
@@ -98,10 +116,12 @@ add_library(${PROJECT_NAME}
   lib/rpc/this_session.cc
   lib/rpc/this_server.cc
   lib/rpc/rpc_error.cc
+  lib/rpc/ITTProfiler.cpp
   lib/rpc/detail/server_session.cc
   lib/rpc/detail/response.cc
   lib/rpc/detail/client_error.cc
   lib/rpc/nonstd/optional.cc
+  ${IPC_SRC}
   ${DEP_SOURCES}
   ${DEP_HEADERS}
   ${RPCLIB_HEADERS})
@@ -166,6 +186,7 @@ if(RPCLIB_COMPILE_DEFINITIONS)
     COMPILE_DEFINITIONS "${RPCLIB_COMPILE_DEFINITIONS}")
 endif()
 
+target_link_libraries(${PROJECT_NAME} PUBLIC libittprofiler)
 target_link_libraries(${PROJECT_NAME} ${RPCLIB_DEP_LIBRARIES})
 if (WIN32)
   target_link_libraries(${PROJECT_NAME} wsock32 ws2_32)
@@ -180,7 +201,8 @@ target_include_directories(
   PRIVATE ${RPCLIB_DEPENDENCIES}/include
   )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION lib EXPORT rpclibTargets)
+#install(TARGETS ${PROJECT_NAME} DESTINATION lib EXPORT rpclibTargets)
+install(TARGETS ${PROJECT_NAME} libittprofiler   DESTINATION lib EXPORT rpclibTargets)
 install(DIRECTORY include/
   DESTINATION include
   FILES_MATCHING

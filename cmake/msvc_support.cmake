@@ -16,7 +16,7 @@ function(rpclib_msvc_support)
       "VC_EXTRALEAN"
       "_CRT_SECURE_NO_WARNINGS"
       "_CRT_NONSTDC_NO_DEPRECATE"
-      "_WIN32_WINNT=0x0501"
+      "_WIN32_WINNT=0x0600"
       "_GNU_SOURCE"
       "ASIO_HAS_STD_ADDRESSOF"
       "ASIO_HAS_STD_ARRAY"

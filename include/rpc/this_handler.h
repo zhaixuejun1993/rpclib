@@ -14,6 +14,7 @@ namespace rpc {
 
 namespace detail {
 class server_session;
+class server_ipc_session;
 class handler_error {};
 class handler_spec_response {};
 }
@@ -60,6 +61,7 @@ public:
     void clear();
 
     friend class rpc::detail::server_session;
+    friend class rpc::detail::server_ipc_session;
 
 private:
     RPCLIB_MSGPACK::object_handle error_, resp_;

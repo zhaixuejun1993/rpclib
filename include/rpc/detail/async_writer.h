@@ -4,7 +4,10 @@
 #define ASYNC_WRITER_H_HQIRH28I
 
 #include "asio.hpp"
+#include "rpc/IPC.h"
+#include "rpc/detail/log.h"
 #include "rpc/msgpack.hpp"
+
 #include <condition_variable>
 #include <deque>
 #include <memory>
@@ -19,11 +22,15 @@ namespace detail {
 //! \brief Common logic for classes that have a write queue with async writing.
 class async_writer : public std::enable_shared_from_this<async_writer> {
 public:
-    async_writer(RPCLIB_ASIO::io_service *io,
-                 RPCLIB_ASIO::ip::tcp::socket socket)
-        : socket_(std::move(socket)), write_strand_(*io), exit_(false) {}
+    async_writer(RPCLIB_ASIO::io_service* io, RPCLIB_ASIO::ip::tcp::socket socket)
+        : socket_(std::move(socket))
+        , write_strand_(*io)
+        , exit_(false)
+    {
+    }
 
-    void close() {
+    void close()
+    {
         exit_ = true;
 
         auto self = shared_from_this();
@@ -34,22 +41,22 @@ public:
                 RPCLIB_ASIO::ip::tcp::socket::shutdown_both, e);
             if (e) {
                 LOG_WARN("std::system_error during socket shutdown. "
-                            "Code: {}. Message: {}", e.value(), e.message());
+                         "Code: {}. Message: {}",
+                    e.value(), e.message());
             }
             socket_.close();
         });
     }
 
-    bool is_closed() const {
+    bool is_closed() const
+    {
         return exit_.load();
     }
 
-    void do_write() {
-        if (exit_) {
-            return;
-        }
+    void do_write()
+    {
         auto self(shared_from_this());
-        auto &item = write_queue_.front();
+        auto& item = write_queue_.front();
         // the data in item remains valid until the handler is called
         // since it will still be in the queue physically until then.
         RPCLIB_ASIO::async_write(
@@ -70,7 +77,9 @@ public:
                 }));
     }
 
-    void write(RPCLIB_MSGPACK::sbuffer &&data) {
+    void write(RPCLIB_MSGPACK::sbuffer&& data)
+    {
+        LOG_TRACE("write tcp socket");
         write_queue_.push_back(std::move(data));
         if (write_queue_.size() > 1) {
             return; // there is an ongoing write chain so don't start another
@@ -79,26 +88,58 @@ public:
         do_write();
     }
 
-    RPCLIB_ASIO::ip::tcp::socket& socket() {
+    RPCLIB_ASIO::ip::tcp::socket& socket()
+    {
         return socket_;
     }
 
 protected:
     template <typename Derived>
-    std::shared_ptr<Derived> shared_from_base() {
+    std::shared_ptr<Derived> shared_from_base()
+    {
         return std::static_pointer_cast<Derived>(shared_from_this());
     }
 
-    RPCLIB_ASIO::strand& write_strand() {
+    RPCLIB_ASIO::strand& write_strand()
+    {
         return write_strand_;
     }
 
 private:
     RPCLIB_ASIO::ip::tcp::socket socket_;
     RPCLIB_ASIO::strand write_strand_;
-    std::atomic_bool exit_{false};
+    std::atomic_bool exit_ { false };
     std::deque<RPCLIB_MSGPACK::sbuffer> write_queue_;
-    RPCLIB_CREATE_LOG_CHANNEL(async_writer)
+    std::deque<RPCLIB_MSGPACK::sbuffer> write_queue_ipc;
+    RPCLIB_CREATE_LOG_CHANNEL(async_writer);
+};
+
+class ipc_writer : public std::enable_shared_from_this<ipc_writer> {
+public:
+    ipc_writer() = default;
+    virtual ~ipc_writer() = default;
+
+    void write(const RPCLIB_MSGPACK::sbuffer& buffer, rpc::Connection& ipcConnection)
+    {
+        size_t length = buffer.size();
+        if (length == 0) {
+            return;
+        }
+
+        std::lock_guard<std::mutex> lock(m_mutex);
+        if (!ipcConnection.write(&length, sizeof(length))) {
+            return;
+        }
+
+        if (!ipcConnection.write(buffer.data(), static_cast<int>(length))) {
+            return;
+        }
+        LOG_TRACE("ipc write to connection {}, size {}", ipcConnection.getId(), buffer.size());
+    }
+
+private:
+    std::mutex m_mutex;
+    RPCLIB_CREATE_LOG_CHANNEL(ipc_writer);
 };
 
 } /* detail */

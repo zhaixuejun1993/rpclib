@@ -8,6 +8,14 @@
 
 #include "rpc/compatibility.h"
 
+#ifndef _WIN32
+#define IPC_PREFIX "/tmp/ov_service_rpc_"
+#else
+#define IPC_PREFIX  "\\\\.\\pipe\\ov_service_rpc_"
+#endif
+
+#define ENABLE_ITT
+
 namespace rpc
 {
 
