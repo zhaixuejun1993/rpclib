@@ -15,8 +15,8 @@
 #include "rpc/ITTProfiler.h"
 
 using namespace rpc::detail;
-using RPCLIB_ASIO::ip::tcp;
-using namespace RPCLIB_ASIO;
+// using RPCLIB_ASIO::ip::tcp;
+// using namespace RPCLIB_ASIO;
 
 static constexpr std::size_t default_buffer_size =
     rpc::constants::DEFAULT_BUFFER_SIZE;
