@@ -6,7 +6,7 @@
 namespace rpc {
 
 namespace detail {
-class server_session;
+//class server_session;
 }
 
 //! \brief Allows controlling the server instance from the

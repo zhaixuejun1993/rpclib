@@ -13,7 +13,7 @@
 namespace rpc {
 
 namespace detail {
-class server_session;
+//class server_session;
 class server_ipc_session;
 class handler_error {};
 class handler_spec_response {};
@@ -60,7 +60,7 @@ public:
     //! \brief Sets all state of the object to default.
     void clear();
 
-    friend class rpc::detail::server_session;
+    //friend class rpc::detail::server_session;
     friend class rpc::detail::server_ipc_session;
 
 private:
