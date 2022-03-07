@@ -12,7 +12,7 @@
 namespace rpc {
 
 namespace detail {
-class server_session;
+//class server_session;
 }
 
 //! \brief Implements a msgpack-rpc server. This is the main interfacing
@@ -112,7 +112,7 @@ public:
     void close_sessions();
 
     //! \brief Closes a specific session.
-    void close_session(std::shared_ptr<detail::server_session> const& s);
+ //   void close_session(std::shared_ptr<detail::server_session> const& s);
 
 private:
 	RPCLIB_DECLARE_PIMPL()
