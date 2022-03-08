@@ -14,9 +14,6 @@ include(check_warning_flag)
 option(RPCLIB_GENERATE_COMPDB 
   "Generate compilation database. Useful for YCM." 
   OFF)
-option(RPCLIB_BUILD_EXAMPLES 
-  "Build examples." 
-  OFF)
 option(RPCLIB_ENABLE_LOGGING 
   "ALlow logging in the library for debug purposes."
   OFF)
@@ -207,20 +204,6 @@ install(DIRECTORY include/
   PATTERN "*.hpp"
   PATTERN "*.inl"
   PATTERN "*.in" EXCLUDE)
-
-#
-# Example programs
-#
-if(RPCLIB_BUILD_EXAMPLES)
-  find_package(Threads)
-  set(RPCLIB_ROOT_DIR "${PROJECT_SOURCE_DIR}")
-  set(RPCLIB_PROJECT_NAME "${CMAKE_PROJECT_NAME}")
-  set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/localbuild")
-  set(ENV{RPCLIB_DEFAULT_PORT} "${RPCLIB_DEFAULT_PORT}")
-  add_subdirectory(examples/echo)
-  add_subdirectory(examples/mandelbrot)
-  add_subdirectory(examples/calculator)
-endif()
 
 #
 # Cmake Package
