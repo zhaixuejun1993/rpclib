@@ -82,9 +82,9 @@ configure_file(
   "${PROJECT_SOURCE_DIR}/include/rpc/config.h.in"
   "${PROJECT_SOURCE_DIR}/include/rpc/config.h")
 
-configure_file(
-  "${PROJECT_SOURCE_DIR}/doc/pages/versions.md.in"
-  "${PROJECT_SOURCE_DIR}/doc/pages/versions.md")
+#configure_file(
+#  "${PROJECT_SOURCE_DIR}/doc/pages/versions.md.in"
+#  "${PROJECT_SOURCE_DIR}/doc/pages/versions.md")
 
 file(GLOB_RECURSE RPCLIB_HEADERS
   include/rpc/*.h
