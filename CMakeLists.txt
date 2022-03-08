@@ -11,9 +11,6 @@ include(check_warning_flag)
 #
 # Options
 #
-option(RPCLIB_BUILD_TESTS 
-  "Build unit RPCLIB_BUILD_TESTS." 
-  OFF)
 option(RPCLIB_GENERATE_COMPDB 
   "Generate compilation database. Useful for YCM." 
   OFF)
@@ -210,13 +207,6 @@ install(DIRECTORY include/
   PATTERN "*.hpp"
   PATTERN "*.inl"
   PATTERN "*.in" EXCLUDE)
-
-#
-# Unit tests
-#
-if(RPCLIB_BUILD_TESTS)
-  add_subdirectory(tests)
-endif()
 
 #
 # Example programs
