@@ -253,7 +253,7 @@ if(NOT MSVC)  # Don't install pkg-config files when building with MSVC
   get_target_property(rpclib_cflags ${PROJECT_NAME} COMPILE_OPTIONS)
   string(REPLACE ";" " " rpclib_cflags "${rpclib_cflags}") # Convert list to string
 
-  configure_file(rpclib.pc.in "${CMAKE_CURRENT_BINARY_DIR}/rpclib.pc" @ONLY)
+  #configure_file(rpclib.pc.in "${CMAKE_CURRENT_BINARY_DIR}/rpclib.pc" @ONLY)
   install(FILES "${CMAKE_CURRENT_BINARY_DIR}/rpclib.pc" DESTINATION "${libdir}/pkgconfig")
 endif()
 
