@@ -6,10 +6,6 @@ function(rpclib_msvc_support)
       set(RPCLIB_MSVC_STATIC_RUNTIME ON)
     endif()
 
-    if(RPCLIB_ENABLE_COVERAGE)
-      message(FATAL_ERROR "Coverage is only supported with non-MS compilers")
-    endif()
-
     target_compile_definitions(${PROJECT_NAME} PRIVATE
       "WIN32_LEAN_AND_MEAN"
       "NOMINMAX"

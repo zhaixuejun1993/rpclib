@@ -5,20 +5,13 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 include(policies)
 include(msvc_support)
-include(coverage)
 include(check_warning_flag)
 
 #
 # Options
 #
-option(RPCLIB_GENERATE_COMPDB 
-  "Generate compilation database. Useful for YCM." 
-  OFF)
 option(RPCLIB_ENABLE_LOGGING 
   "ALlow logging in the library for debug purposes."
-  OFF)
-option(RPCLIB_ENABLE_COVERAGE 
-  "Generate coverage information" 
   OFF)
 option(RPCLIB_MSVC_STATIC_RUNTIME 
   "MSVC only: build with /MT instead of /MD" 
@@ -43,13 +36,6 @@ set(RPCLIB_DEFAULT_BUFFER_SIZE "1024 << 10"
   CACHE STRING "Default buffer size")
 set(RPCLIB_CXX_STANDARD 11 CACHE STRING 
   "C++ version used to build rpclib (Currently: Only 11 and 14 supported)")
-
-if(RPCLIB_GENERATE_COMPDB)
-  set(CMAKE_EXPORT_COMPILE_COMMANDS "ON") # for YCM
-  add_custom_command(PROJECT_NAME ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E
-    copy ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_BINARY_DIR}/../compile_commands.json)
-endif()
 
 if(NOT ${RPCLIB_CXX_STANDARD} EQUAL 14 AND 
    NOT ${RPCLIB_CXX_STANDARD} EQUAL 11)
@@ -119,10 +105,6 @@ add_library(${PROJECT_NAME}
 rpclib_msvc_support()
 
 set(RPCLIB_BUILD_FLAGS "") # reset flags
-
-if(RPCLIB_ENABLE_COVERAGE)
-  enable_coverage(${PROJECT_NAME})
-endif()
 
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
   # clang is the compiler used for developing mainly, so
