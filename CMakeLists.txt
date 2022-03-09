@@ -13,10 +13,6 @@ include(check_warning_flag)
 option(RPCLIB_ENABLE_LOGGING 
   "ALlow logging in the library for debug purposes."
   OFF)
-option(RPCLIB_MSVC_STATIC_RUNTIME 
-  "MSVC only: build with /MT instead of /MD" 
-  OFF)
-
 option(ENABLE_ITT "Parameter to enable itt tracer" ON)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/configs)
