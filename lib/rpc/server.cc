@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <thread>
 
-#include "format.h"
+#include "rpc/format.h"
 #include "rpc/IPC.h"
 #include "rpc/detail/dev_utils.h"
 #include "rpc/detail/log.h"

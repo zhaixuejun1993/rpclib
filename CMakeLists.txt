@@ -69,8 +69,6 @@ elseif (APPLE)
   set(RPCLIB_OS_DEF "RPCLIB_MAC")
 endif()
 
-set(RPCLIB_DEPENDENCIES "${CMAKE_CURRENT_LIST_DIR}/dependencies")
-
 configure_file(
   "${PROJECT_SOURCE_DIR}/include/rpc/version.h.in"
   "${PROJECT_SOURCE_DIR}/include/rpc/version.h")
@@ -87,12 +85,7 @@ file(GLOB_RECURSE RPCLIB_HEADERS
   include/rpc/*.h
   include/msgpack/*.hpp)
 file(GLOB_RECURSE DEP_HEADERS
-  ${RPCLIB_DEPENDENCIES}/include/*.h
   ${RPCLIB_DEP_LIBRARIDEPENDENCIES}/include/*.hpp)
-
-set(DEP_SOURCES
-  ${RPCLIB_DEPENDENCIES}/src/format.cc
-  ${RPCLIB_DEPENDENCIES}/src/posix.cc)
 
 if (MSVC)
   SET(IPC_SRC lib/rpc/platform/windows/IPC.cpp)
@@ -115,9 +108,11 @@ add_library(${PROJECT_NAME}
   lib/rpc/detail/response.cc
   lib/rpc/detail/client_error.cc
   lib/rpc/nonstd/optional.cc
+  lib/rpc/posix.cc
+  lib/rpc/format.cc
   ${IPC_SRC}
-  ${DEP_SOURCES}
-  ${DEP_HEADERS}
+  #${DEP_SOURCES}
+  #${DEP_HEADERS}
   ${RPCLIB_HEADERS})
 
 # Perform steps and checks required for MSVC support
@@ -189,10 +184,6 @@ target_include_directories(
   ${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
-  )
-target_include_directories(
-  ${PROJECT_NAME} SYSTEM
-  PRIVATE ${RPCLIB_DEPENDENCIES}/include
   )
 
 #install(TARGETS ${PROJECT_NAME} DESTINATION lib EXPORT rpclibTargets)

@@ -39,7 +39,7 @@
 #pragma clang diagnostic ignored "-Wdisabled-macro-expansion"
 #endif
 
-#include "posix.h"
+#include "rpc/posix.h"
 
 #include <limits.h>
 #include <sys/types.h>

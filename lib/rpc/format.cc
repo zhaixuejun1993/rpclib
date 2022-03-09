@@ -37,7 +37,7 @@
 #pragma clang diagnostic ignored "-Wimplicit-fallthrough"
 #endif
 
-#include "format.h"
+#include "rpc/format.h"
 
 #include <string.h>
 

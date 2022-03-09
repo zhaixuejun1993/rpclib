@@ -1,4 +1,4 @@
-#include "format.h"
+#include "rpc/format.h"
 
 #include "rpc/detail/client_error.h"
 
