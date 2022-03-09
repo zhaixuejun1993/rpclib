@@ -87,7 +87,6 @@ rpclib_msvc_support()
 
 target_compile_definitions(${PROJECT_NAME} 
   PRIVATE
-    "${RPCLIB_COMPILE_DEFINITIONS}"
     "${RPCLIB_ARCH_DEF}"
     "RPCLIB_FMT=clmdep_fmt"
   PUBLIC
@@ -97,13 +96,6 @@ target_compile_definitions(${PROJECT_NAME}
 
 if(RPCLIB_ENABLE_LOGGING)
   target_compile_definitions(${PROJECT_NAME} PRIVATE "RPCLIB_ENABLE_LOGGING")
-endif()
-
-#to do: remove
-if(RPCLIB_COMPILE_DEFINITIONS)
-  set_target_properties(${PROJECT_NAME}
-    PROPERTIES
-    COMPILE_DEFINITIONS "${RPCLIB_COMPILE_DEFINITIONS}")
 endif()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC libittprofiler)
