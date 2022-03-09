@@ -8,11 +8,6 @@ function(rpclib_msvc_support)
       "_CRT_SECURE_NO_WARNINGS"
       "_CRT_NONSTDC_NO_DEPRECATE"
       "_WIN32_WINNT=0x0600"
-      "_GNU_SOURCE"
-      "ASIO_HAS_STD_ADDRESSOF"
-      "ASIO_HAS_STD_ARRAY"
-      "ASIO_HAS_CSTDINT"
-      "ASIO_HAS_STD_SHARED_PTR"
-      "ASIO_HAS_STD_TYPE_TRAITS")
+      "_GNU_SOURCE")
   endif()
 endfunction()

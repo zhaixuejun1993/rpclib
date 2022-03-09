@@ -17,15 +17,12 @@ option(ENABLE_ITT "Parameter to enable itt tracer" ON)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/configs)
 
-if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm" OR ${CMAKE_SYSTEM_PROCESSOR} STREQUAL "aarch64")
-  set(ARM_ENV ON)
-else ()
-  set(X86_ENV ON)
-endif ()
+set(X86_ENV ON)
 
 #
 # Other configuration values
 #
+# to do remove (replace by IPC)
 set(RPCLIB_DEFAULT_PORT 8080 
   CACHE STRING "Default port used for running tests and examples")
 set(RPCLIB_DEFAULT_BUFFER_SIZE "1024 << 10" 
@@ -52,22 +49,12 @@ elseif (APPLE)
 endif()
 
 configure_file(
-  "${PROJECT_SOURCE_DIR}/include/rpc/version.h.in"
-  "${PROJECT_SOURCE_DIR}/include/rpc/version.h")
-
-configure_file(
   "${PROJECT_SOURCE_DIR}/include/rpc/config.h.in"
   "${PROJECT_SOURCE_DIR}/include/rpc/config.h")
-
-#configure_file(
-#  "${PROJECT_SOURCE_DIR}/doc/pages/versions.md.in"
-#  "${PROJECT_SOURCE_DIR}/doc/pages/versions.md")
 
 file(GLOB_RECURSE RPCLIB_HEADERS
   include/rpc/*.h
   include/msgpack/*.hpp)
-file(GLOB_RECURSE DEP_HEADERS
-  ${RPCLIB_DEP_LIBRARIDEPENDENCIES}/include/*.hpp)
 
 if (MSVC)
   SET(IPC_SRC lib/rpc/platform/windows/IPC.cpp)
@@ -93,46 +80,15 @@ add_library(${PROJECT_NAME}
   lib/rpc/posix.cc
   lib/rpc/format.cc
   ${IPC_SRC}
-  #${DEP_SOURCES}
-  #${DEP_HEADERS}
   ${RPCLIB_HEADERS})
 
 # Perform steps and checks required for MSVC support
 rpclib_msvc_support()
 
-set(RPCLIB_BUILD_FLAGS "") # reset flags
-
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
-  # clang is the compiler used for developing mainly, so
-  # this is where I set the highest warning level
-  list(APPEND RPCLIB_BUILD_FLAGS
-    -Wall -pedantic -Weverything -Wno-c++98-compat
-    -Wno-c++98-compat-pedantic -Wno-padded -Wno-missing-prototypes
-    -Wno-undef)
-
-    set(UNUSED_LAMBDA_CAPTURE_WARN_SUPPORTED)
-    check_warning_flag("unused-lambda-capture" UNUSED_LAMBDA_CAPTURE_WARN_SUPPORTED)
-    if(${UNUSED_LAMBDA_CAPTURE_WARN_SUPPORTED})
-      list(APPEND RPCLIB_BUILD_FLAGS -Wno-unused-lambda-capture)
-    endif()
-
-    check_warning_flag("zero-as-null-pointer-constant" ZERO_AS_NULL_POINTER_CONSTANT_WARN_SUPPORTED)
-    set(ZERO_AS_NULL_POINTER_CONSTANT_WARN_SUPPORTED)
-    if(${ZERO_AS_NULL_POINTER_CONSTANT_WARN_SUPPORTED})
-      list(APPEND RPCLIB_BUILD_FLAGS -Wno-zero-as-null-pointer-constant)
-    endif()
-endif()
-
-if (RPCLIB_EXTRA_BUILD_FLAGS)
-  list(APPEND RPCLIB_BUILD_FLAGS ${RPCLIB_EXTRA_BUILD_FLAGS})
-endif()
-
 target_compile_definitions(${PROJECT_NAME} 
   PRIVATE
     "${RPCLIB_COMPILE_DEFINITIONS}"
     "${RPCLIB_ARCH_DEF}"
-    "ASIO_STANDALONE"
-    "RPCLIB_ASIO=clmdep_asio"
     "RPCLIB_FMT=clmdep_fmt"
   PUBLIC
     "${RPCLIB_OS_DEF}"
@@ -143,10 +99,7 @@ if(RPCLIB_ENABLE_LOGGING)
   target_compile_definitions(${PROJECT_NAME} PRIVATE "RPCLIB_ENABLE_LOGGING")
 endif()
 
-if(RPCLIB_BUILD_FLAGS)
-  target_compile_options(${PROJECT_NAME} PRIVATE ${RPCLIB_BUILD_FLAGS})
-endif()
-
+#to do: remove
 if(RPCLIB_COMPILE_DEFINITIONS)
   set_target_properties(${PROJECT_NAME}
     PROPERTIES
@@ -154,7 +107,6 @@ if(RPCLIB_COMPILE_DEFINITIONS)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC libittprofiler)
-target_link_libraries(${PROJECT_NAME} ${RPCLIB_DEP_LIBRARIES})
 if (WIN32)
   target_link_libraries(${PROJECT_NAME} wsock32 ws2_32)
 endif()
@@ -163,66 +115,4 @@ target_include_directories(
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
   )
-
-#install(TARGETS ${PROJECT_NAME} DESTINATION lib EXPORT rpclibTargets)
-install(TARGETS ${PROJECT_NAME} libittprofiler   DESTINATION lib EXPORT rpclibTargets)
-install(DIRECTORY include/
-  DESTINATION include
-  FILES_MATCHING
-  PATTERN "*.h"
-  PATTERN "*.hpp"
-  PATTERN "*.inl"
-  PATTERN "*.in" EXCLUDE)
-
-#
-# Cmake Package
-#
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/cmake/rpclibConfigVersion.cmake"
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY AnyNewerVersion
-  )
-
-set(CONFIG_PACKAGE_LOCATION lib/cmake/rpclib)
-set(INCLUDE_INSTALL_DIR include/ )
-
-configure_package_config_file(cmake/rpclibConfig.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake/rpclibConfig.cmake
-  INSTALL_DESTINATION ${CONFIG_PACKAGE_LOCATION}
-  PATH_VARS INCLUDE_INSTALL_DIR
-  )
-
-export(EXPORT rpclibTargets
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/rpclibTargets.cmake"
-  NAMESPACE rpclib::
-  )
-
-install(EXPORT rpclibTargets
-  FILE rpclibTargets.cmake
-  NAMESPACE rpclib::
-  DESTINATION ${CONFIG_PACKAGE_LOCATION}
-  )
-install(FILES
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake/rpclibConfig.cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake/rpclibConfigVersion.cmake
-  DESTINATION ${CONFIG_PACKAGE_LOCATION}
-  )
-
-#
-# Pkg-config
-#
-if(NOT MSVC)  # Don't install pkg-config files when building with MSVC
-  # Variables for pkg-config files
-  set(prefix "${CMAKE_INSTALL_PREFIX}")
-  set(exec_prefix "")
-  set(libdir "${CMAKE_INSTALL_PREFIX}/lib")
-  set(includedir "${CMAKE_INSTALL_PREFIX}/include")
-  set(rpclib_version ${PROJECT_VERSION})
-  get_target_property(rpclib_cflags ${PROJECT_NAME} COMPILE_OPTIONS)
-  string(REPLACE ";" " " rpclib_cflags "${rpclib_cflags}") # Convert list to string
-
-  #configure_file(rpclib.pc.in "${CMAKE_CURRENT_BINARY_DIR}/rpclib.pc" @ONLY)
-  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/rpclib.pc" DESTINATION "${libdir}/pkgconfig")
-endif()
 
