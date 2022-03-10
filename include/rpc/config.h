@@ -24,7 +24,6 @@ using session_id_t = std::intptr_t;
 //! \brief Constants used in the library
 struct constants RPCLIB_FINAL {
     static RPCLIB_CONSTEXPR std::size_t DEFAULT_BUFFER_SIZE = 1024 << 10;
-    // static RPCLIB_CONSTEXPR std::uint16_t DEFAULT_PORT = ;
 };
 
 } /* rpc */
