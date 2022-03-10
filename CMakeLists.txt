@@ -22,9 +22,6 @@ set(X86_ENV ON)
 #
 # Other configuration values
 #
-# to do remove (replace by IPC)
-set(RPCLIB_DEFAULT_PORT 8080 
-  CACHE STRING "Default port used for running tests and examples")
 set(RPCLIB_DEFAULT_BUFFER_SIZE "1024 << 10" 
   CACHE STRING "Default buffer size")
 set(RPCLIB_CXX_STANDARD 11 CACHE STRING 
