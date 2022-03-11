@@ -5,10 +5,6 @@
 
 namespace rpc {
 
-namespace detail {
-//class server_session;
-}
-
 //! \brief Allows controlling the server instance from the
 //! currently executing handler.
 class this_server_t {

@@ -9,7 +9,6 @@
 namespace rpc {
 
 namespace detail {
-//class server_session;
 class server_ipc_session;
 }
 
@@ -33,7 +32,6 @@ public:
     //! of the session.
     session_id_t id() const;
 
-   // friend class rpc::detail::server_session;
     friend class rpc::detail::server_ipc_session;
 
 private:

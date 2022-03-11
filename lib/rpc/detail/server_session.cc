@@ -16,50 +16,6 @@ namespace detail {
 static constexpr std::size_t default_buffer_size =
     rpc::constants::DEFAULT_BUFFER_SIZE;
 
-// server_session::server_session(server *srv, RPCLIB_ASIO::io_service *io,
-//                                RPCLIB_ASIO::ip::tcp::socket socket,
-//                                std::shared_ptr<dispatcher> disp,
-//                                bool suppress_exceptions)
-//     : async_writer(io, std::move(socket)),
-//       parent_(srv),
-//       io_(io),
-//       read_strand_(*io),
-//       disp_(disp),
-//       pac_(),
-//       suppress_exceptions_(suppress_exceptions) {
-//     pac_.reserve_buffer(default_buffer_size); // TODO: make this configurable
-//                                               // [sztomi 2016-01-13]
-// }
-
-// void server_session::start() { do_read(); }
-
-// void server_session::close() {
-//     LOG_INFO("Closing session.");
-//     async_writer::close();
-// }
-
-// void server_session::do_read() {
-//     auto self(shared_from_base<server_session>());
-//     constexpr std::size_t max_read_bytes = default_buffer_size;
-//     socket().async_read_some(
-//         RPCLIB_ASIO::buffer(pac_.buffer(), default_buffer_size),
-//         // I don't think max_read_bytes needs to be captured explicitly
-//         // (since it's constexpr), but MSVC insists.
-//         read_strand_.wrap([this, self, max_read_bytes](std::error_code ec,
-//                                                        std::size_t length) {
-//             if (is_closed()) {
-//                 return;
-//             }
-//             if (ec == RPCLIB_ASIO::error::eof ||
-//                 ec == RPCLIB_ASIO::error::connection_reset) {
-//                 LOG_INFO("Client disconnected");
-//                 self->close();
-//             } else {
-//                 LOG_ERROR("Unhandled error code: {} | '{}'", ec, ec.message());
-//             }
-//         }));
-// }
-
 server_ipc_session::server_ipc_session(std::shared_ptr<dispatcher> disp,
                                        int thread_size,
                                        bool suppress_exceptions)

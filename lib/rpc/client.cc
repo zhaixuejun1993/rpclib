@@ -11,7 +11,6 @@
 #include <thread>
 #include <unordered_map>
 
-// #include "asio.hpp"
 #include "rpc/format.h"
 
 #include "rpc/detail/async_writer.h"
@@ -19,8 +18,6 @@
 #include "rpc/detail/response.h"
 #include "rpc/ITTProfiler.h"
 
-// using namespace RPCLIB_ASIO;
-// using RPCLIB_ASIO::ip::tcp;
 using namespace rpc::detail;
 
 namespace rpc {
