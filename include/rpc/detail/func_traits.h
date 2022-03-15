@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef FUNC_TRAITS_H_HWIWA6G0
-#define FUNC_TRAITS_H_HWIWA6G0
+#ifndef FUNC_TRAITS_H_RPC
+#define FUNC_TRAITS_H_RPC
 
 #include "rpc/detail/bool.h"
 
@@ -74,4 +74,4 @@ using is_void_result = std::is_void<typename func_traits<F>::result_type>;
 }
 }
 
-#endif /* end of include guard: FUNC_TRAITS_H_HWIWA6G0 */
+#endif /* end of include guard: FUNC_TRAITS_H_RPC */

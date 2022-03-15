@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CONSTANT_H_5CXUYJEW
-#define CONSTANT_H_5CXUYJEW
+#ifndef CONSTANT_H_RPC
+#define CONSTANT_H_RPC
 
 #include <type_traits>
 
@@ -14,4 +14,4 @@ struct constant : std::integral_constant<T, I> {};
 }
 }
 
-#endif /* end of include guard: CONSTANT_H_5CXUYJEW */
+#endif /* end of include guard: CONSTANT_H_RPC */

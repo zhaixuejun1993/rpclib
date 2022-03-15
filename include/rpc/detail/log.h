@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef LOG_H_SPSC31OG
-#define LOG_H_SPSC31OG
+#ifndef LOG_H_RPC
+#define LOG_H_RPC
 
 #ifdef RPCLIB_ENABLE_LOGGING
 
@@ -164,4 +164,4 @@ RPCLIB_CREATE_LOG_CHANNEL(global)
 
 #endif
 
-#endif /* end of include guard: LOG_H_SPSC31OG */
+#endif /* end of include guard: LOG_H_RPC */

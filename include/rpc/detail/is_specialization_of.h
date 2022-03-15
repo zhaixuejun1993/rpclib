@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef IS_SPECIALIZATION_OF_H_OPZTARVG
-#define IS_SPECIALIZATION_OF_H_OPZTARVG
+#ifndef IS_SPECIALIZATION_OF_H_RPC
+#define IS_SPECIALIZATION_OF_H_RPC
 
 #include "rpc/detail/bool.h"
 
@@ -17,4 +17,4 @@ struct is_specialization_of<Templ, Templ<T...>> : true_ {};
 }
 } /* rpc  */
 
-#endif /* end of include guard: IS_SPECIALIZATION_OF_H_OPZTARVG */
+#endif /* end of include guard: IS_SPECIALIZATION_OF_H_RPC */

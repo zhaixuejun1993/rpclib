@@ -11,7 +11,7 @@
 #include "rpc/detail/dev_utils.h"
 #include "rpc/detail/log.h"
 #include "rpc/detail/server_session.h"
-#include "rpc/this_server.h"
+//#include "rpc/this_server.h"
 #include "rpc/ITTProfiler.h"
 
 using namespace rpc::detail;
@@ -138,7 +138,5 @@ void server::async_run(std::size_t worker_threads) {
 }
 
 void server::stop() { pimpl->stop(); }
-
-unsigned short server::port() const { return pimpl->port(); }
 
 } // namespace rpc

@@ -65,9 +65,6 @@ add_library(${PROJECT_NAME}
   lib/rpc/dispatcher.cc
   lib/rpc/server.cc
   lib/rpc/client.cc
-  lib/rpc/this_handler.cc
-  lib/rpc/this_session.cc
-  lib/rpc/this_server.cc
   lib/rpc/rpc_error.cc
   lib/rpc/ITTProfiler.cpp
   lib/rpc/detail/server_session.cc

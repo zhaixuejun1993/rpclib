@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CALL_H_ZXFACADH
-#define CALL_H_ZXFACADH
+#ifndef CALL_H_RPC
+#define CALL_H_RPC
 
 #include <tuple>
 #include "rpc/detail/func_tools.h"
@@ -89,4 +89,4 @@ auto call(Functor f, std::tuple<ArgsT...>& args_t)
 }
 }
 
-#endif /* end of include guard: CALL_H_ZXFACADH */
+#endif /* end of include guard: CALL_H_RPC */

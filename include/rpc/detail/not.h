@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef NOT_H_0MEGQWII
-#define NOT_H_0MEGQWII
+#ifndef NOT_H_RPC
+#define NOT_H_RPC
 
 #include "rpc/detail/bool.h"
 
@@ -14,4 +14,4 @@ using not_ = bool_<!B::value>;
 }
 }
 
-#endif /* end of include guard: NOT_H_0MEGQWII */
+#endif /* end of include guard: NOT_H_RPC */

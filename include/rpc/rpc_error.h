@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef RPC_ERROR_H_NEOOSTKY
-#define RPC_ERROR_H_NEOOSTKY
+#ifndef RPC_ERROR_H_RPC
+#define RPC_ERROR_H_RPC
 
 #include <exception>
 #include <system_error>
@@ -9,7 +9,12 @@
 #include "rpc/msgpack.hpp"
 
 namespace rpc {
-
+    
+namespace detail {
+class server_ipc_session;
+class handler_error {};
+class handler_spec_response {};
+}
 //! \brief This exception is thrown by the client when the server signals an
 //! error during a call.
 //!
@@ -59,4 +64,4 @@ public:
 } /* rpc */
 
 
-#endif /* end of include guard: RPC_ERROR_H_NEOOSTKY */
+#endif /* end of include guard: RPC_ERROR_H_RPC */

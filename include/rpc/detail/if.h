@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef IF_H_1OW9DR7G
-#define IF_H_1OW9DR7G
+#ifndef IF_H_RPC
+#define IF_H_RPC
 
 #include "rpc/detail/invoke.h"
 
@@ -13,4 +13,4 @@ using if_ = invoke<std::conditional<C::value, T, F>>;
 }
 }
 
-#endif /* end of include guard: IF_H_1OW9DR7G */
+#endif /* end of include guard: IF_H_RPC */

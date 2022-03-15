@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef FUNC_TOOLS_H_9FNRD4G2
-#define FUNC_TOOLS_H_9FNRD4G2
+#ifndef FUNC_TOOLS_H_RPC
+#define FUNC_TOOLS_H_RPC
 
 #include "rpc/detail/invoke.h"
 #include "rpc/detail/all.h"
@@ -23,4 +23,4 @@ using disable_if = invoke<std::enable_if<!any<C...>::value, enabled>>;
 }
 }
 
-#endif /* end of include guard: FUNC_TOOLS_H_9FNRD4G2 */
+#endif /* end of include guard: FUNC_TOOLS_H_RPC */

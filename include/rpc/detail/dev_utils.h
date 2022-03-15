@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef DEV_UTILS_H_JQSWE2OS
-#define DEV_UTILS_H_JQSWE2OS
+#ifndef DEV_UTILS_H_RPC
+#define DEV_UTILS_H_RPC
 
 #ifdef RPCLIB_LINUX
 #include "pthread.h"
@@ -18,4 +18,4 @@ inline void name_thread(std::string const &name) {
 } /* detail */
 } /* rpc */
 
-#endif /* end of include guard: DEV_UTILS_H_JQSWE2OS */
+#endif /* end of include guard: DEV_UTILS_H_RPC */

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef SESSION_H_5KG6ZMAB
-#define SESSION_H_5KG6ZMAB
+#ifndef SESSION_H_RPC
+#define SESSION_H_RPC
 
 #include <memory>
 #include <vector>
@@ -41,4 +41,4 @@ private:
 } /* detail */
 } /* rpc */
 
-#endif /* end of include guard: SESSION_H_5KG6ZMAB */
+#endif /* end of include guard: SESSION_H_RPC */

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef RESPONSE_H_MVRZEKPX
-#define RESPONSE_H_MVRZEKPX
+#ifndef RESPONSE_H_RPC
+#define RESPONSE_H_RPC
 
 #include "rpc/detail/log.h"
 #include "rpc/detail/make_unique.h"
@@ -115,4 +115,4 @@ inline response response::make_error(uint32_t id, T &&error) {
 
 } /* rpc  */
 
-#endif /* end of include guard: RESPONSE_H_MVRZEKPX */
+#endif /* end of include guard: RESPONSE_H_RPC */

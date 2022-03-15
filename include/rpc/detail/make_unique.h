@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef MAKE_UNIQUE_H_FOOBAR
-#define MAKE_UNIQUE_H_FOOBAR
+#ifndef MAKE_UNIQUE_H_RPC
+#define MAKE_UNIQUE_H_RPC
 
 #include <memory>
 
@@ -27,5 +27,5 @@ std::unique_ptr<T> make_unique(Ts&&... params)
 } /* detail */
 } /* rpc  */
 
-#endif /* end of include guard: MAKE_UNIQUE_H_FOOBAR */
+#endif /* end of include guard: MAKE_UNIQUE_H_RPC */
 

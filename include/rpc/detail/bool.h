@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef BOOL_H_QLG6S5XZ
-#define BOOL_H_QLG6S5XZ
+#ifndef BOOL_RPC
+#define BOOL_RPC
 
 #include "rpc/detail/constant.h"
 
@@ -18,4 +18,4 @@ using false_ = bool_<false>;
 }
 }
 
-#endif /* end of include guard: BOOL_H_QLG6S5XZ */
+#endif /* end of include guard: BOOL_RPC */

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef UTIL_H_YRIZ63UJ
-#define UTIL_H_YRIZ63UJ
+#ifndef UTIL_H_RPC
+#define UTIL_H_RPC
 
 #include "rpc/msgpack.hpp"
 #include "rpc/detail/make_unique.h"
@@ -16,4 +16,4 @@ template <typename T> RPCLIB_MSGPACK::object_handle pack(T &&o) {
 } /* detail */
 } /* rpc  */
 
-#endif /* end of include guard: UTIL_H_YRIZ63UJ */
+#endif /* end of include guard: UTIL_H_RPC */

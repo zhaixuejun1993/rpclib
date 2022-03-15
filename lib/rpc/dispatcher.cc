@@ -1,10 +1,13 @@
 #include "rpc/dispatcher.h"
 #include "rpc/format.h"
 #include "rpc/detail/client_error.h"
-#include "rpc/this_handler.h"
 
 namespace rpc {
 namespace detail {
+
+class server_ipc_session;
+class handler_error {};
+class handler_spec_response {};
 
 using detail::response;
 

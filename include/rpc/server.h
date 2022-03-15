@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef SERVER_H_S0HB5KXY
-#define SERVER_H_S0HB5KXY
+#ifndef SERVER_H_RPC
+#define SERVER_H_RPC
 
 #include "rpc/config.h"
 #include "rpc/msgpack.hpp"
@@ -99,10 +99,6 @@ public:
     //! \note This should not be called from worker threads.
     void stop();
 
-    //! \brief Returns port
-    //! \note The port
-    unsigned short port() const;
-
     //! \brief Closes all sessions gracefully.
     void close_sessions();
 
@@ -113,4 +109,4 @@ private:
 
 } /* rpc */
 
-#endif /* end of include guard: SERVER_H_S0HB5KXY */
+#endif /* end of include guard: SERVER_H_RPC */

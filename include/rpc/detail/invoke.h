@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef INVOKE_H_0CWMPLUE
-#define INVOKE_H_0CWMPLUE
+#ifndef INVOKE_H_RPC
+#define INVOKE_H_RPC
 
 namespace rpc {
 namespace detail {
@@ -12,4 +12,4 @@ using invoke = typename T::type;
 }}
 
 
-#endif /* end of include guard: INVOKE_H_0CWMPLUE */
+#endif /* end of include guard: INVOKE_H_RPC */

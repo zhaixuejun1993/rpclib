@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef THREAD_GROUP_H_MQSLWGKD
-#define THREAD_GROUP_H_MQSLWGKD
+#ifndef THREAD_GROUP_H_RPC
+#define THREAD_GROUP_H_RPC
 
 #include <thread>
 #include <vector>
@@ -37,4 +37,4 @@ private:
 } /* detail */
 } /* rpc  */
 
-#endif /* end of include guard: THREAD_GROUP_H_MQSLWGKD */
+#endif /* end of include guard: THREAD_GROUP_H_RPC */

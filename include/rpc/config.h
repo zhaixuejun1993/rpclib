@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CONFIG_H_L7IVDSPZ
-#define CONFIG_H_L7IVDSPZ
+#ifndef CONFIG_H_RPC
+#define CONFIG_H_RPC
 
 #include <cstddef>
 #include <cstdint>
@@ -9,9 +9,9 @@
 #include "rpc/compatibility.h"
 
 #ifndef _WIN32
-#define IPC_PREFIX "/tmp/ov_service_rpc_"
+#define IPC_PREFIX "/tmp/ols_rpc_"
 #else
-#define IPC_PREFIX  "\\\\.\\pipe\\ov_service_rpc_"
+#define IPC_PREFIX  "\\\\.\\pipe\\ols_rpc_"
 #endif
 
 #define ENABLE_ITT
@@ -42,4 +42,4 @@ struct constants RPCLIB_FINAL {
 #define RPCLIB_CXX_STANDARD 11
 #endif
 
-#endif /* end of include guard: CONFIG_H_L7IVDSPZ */
+#endif /* end of include guard: CONFIG_H_RPC */

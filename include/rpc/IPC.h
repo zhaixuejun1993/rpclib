@@ -3,8 +3,8 @@
 //
 //SPDX-License-Identifier: MIT
 //
-#ifndef HDDLUNITE_IPC_H
-#define HDDLUNITE_IPC_H
+#ifndef RPC_IPC_H
+#define RPC_IPC_H
 
 #include <memory>
 #include <mutex>
@@ -197,4 +197,4 @@ private:
 };
 }
 
-#endif //HDDLUNITE_IPC_H
+#endif //RPC_IPC_H

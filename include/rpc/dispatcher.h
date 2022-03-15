@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef DISPATCHER_H_CXIVZD5L
-#define DISPATCHER_H_CXIVZD5L
+#ifndef DISPATCHER_H_RPC
+#define DISPATCHER_H_RPC
 
 #include <atomic>
 #include <functional>
@@ -121,4 +121,4 @@ private:
 
 #include "dispatcher.inl"
 
-#endif /* end of include guard: DISPATCHER_H_CXIVZD5L */
+#endif /* end of include guard: DISPATCHER_H_RPC */
