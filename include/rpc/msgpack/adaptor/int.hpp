@@ -10,8 +10,8 @@
 #ifndef MSGPACK_TYPE_INT_HPP
 #define MSGPACK_TYPE_INT_HPP
 
-#include "rpc/msgpack/adaptor/int_decl.hpp"
+#include "msgpack/adaptor/int_decl.hpp"
 
-#include "rpc/msgpack/v1/adaptor/int.hpp"
+#include "msgpack/v1/adaptor/int.hpp"
 
 #endif // MSGPACK_TYPE_INT_HPP

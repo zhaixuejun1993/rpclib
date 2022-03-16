@@ -10,11 +10,11 @@
 #ifndef MSGPACK_V1_TYPE_SIZE_EQUAL_ONLY_DECL_HPP
 #define MSGPACK_V1_TYPE_SIZE_EQUAL_ONLY_DECL_HPP
 
-#include "rpc/msgpack/versioning.hpp"
-#include "rpc/msgpack/adaptor/adaptor_base.hpp"
-#include "rpc/msgpack/adaptor/msgpack_tuple.hpp"
+#include "msgpack/versioning.hpp"
+#include "msgpack/adaptor/adaptor_base.hpp"
+#include "msgpack/adaptor/msgpack_tuple.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -47,6 +47,6 @@ std::size_t size(std::tuple<T...> const&);
 } // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-} // namespace clmdep_msgpack
+} // namespace msgpack
 
 #endif // MSGPACK_V1_TYPE_SIZE_EQUAL_ONLY_DECL_HPP

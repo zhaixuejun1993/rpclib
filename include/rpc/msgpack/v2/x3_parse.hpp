@@ -16,7 +16,7 @@
 
 #if BOOST_VERSION >= 106100
 
-#include "rpc/msgpack/versioning.hpp"
+#include "msgpack/versioning.hpp"
 
 #if __GNUC__ >= 4
 #pragma GCC diagnostic push
@@ -27,7 +27,7 @@
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/binary.hpp>
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v2) {
@@ -857,7 +857,7 @@ inline bool parse(Iterator&& begin, Iterator&& end, Visitor&& vis) {
 }  // MSGPACK_API_VERSION_NAMESPACE(v2)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #if __GNUC__ >= 4
 #pragma GCC diagnostic pop

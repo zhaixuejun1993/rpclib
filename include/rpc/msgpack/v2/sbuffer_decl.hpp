@@ -10,13 +10,13 @@
 #ifndef MSGPACK_V2_SBUFFER_DECL_HPP
 #define MSGPACK_V2_SBUFFER_DECL_HPP
 
-#include "rpc/msgpack/versioning.hpp"
+#include "msgpack/versioning.hpp"
 
 #ifndef MSGPACK_SBUFFER_INIT_SIZE
 #define MSGPACK_SBUFFER_INIT_SIZE 8192
 #endif
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v2) {
@@ -28,6 +28,6 @@ using v1::sbuffer;
 }  // MSGPACK_API_VERSION_NAMESPACE(v2)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V2_SBUFFER_DECL_HPP

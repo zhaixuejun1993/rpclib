@@ -10,9 +10,9 @@
 #ifndef MSGPACK_V2_TYPE_INT_DECL_HPP
 #define MSGPACK_V2_TYPE_INT_DECL_HPP
 
-#include "rpc/msgpack/v1/adaptor/int_decl.hpp"
+#include "msgpack/v1/adaptor/int_decl.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v2){
@@ -49,6 +49,6 @@ using v1::type::detail::object_char;
 }  // MSGPACK_API_VERSION_NAMESPACE(v2)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V2_TYPE_INT_DECL_HPP

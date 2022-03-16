@@ -10,10 +10,10 @@
 #ifndef MSGPACK_V1_TYPE_NIL_DECL_HPP
 #define MSGPACK_V1_TYPE_NIL_DECL_HPP
 
-#include "rpc/msgpack/versioning.hpp"
-#include "rpc/msgpack/adaptor/adaptor_base.hpp"
+#include "msgpack/versioning.hpp"
+#include "msgpack/adaptor/adaptor_base.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -39,6 +39,6 @@ bool operator==(nil_t const& lhs, nil_t const& rhs);
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V1_TYPE_NIL_DECL_HPP

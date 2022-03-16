@@ -10,12 +10,12 @@
 #ifndef MSGPACK_V1_ZBUFFER_HPP
 #define MSGPACK_V1_ZBUFFER_HPP
 
-#include "rpc/msgpack/v1/zbuffer_decl.hpp"
+#include "msgpack/v1/zbuffer_decl.hpp"
 
 #include <stdexcept>
 #include <zlib.h>
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -154,6 +154,6 @@ private:
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V1_ZBUFFER_HPP

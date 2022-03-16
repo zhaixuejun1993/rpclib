@@ -11,13 +11,13 @@
 #ifndef MSGPACK_V1_OBJECT_FWD_DECL_HPP
 #define MSGPACK_V1_OBJECT_FWD_DECL_HPP
 
-#include "rpc/msgpack/versioning.hpp"
-#include "rpc/msgpack/zone.hpp"
-#include "rpc/msgpack/object.h"
+#include "msgpack/versioning.hpp"
+#include "msgpack/zone.hpp"
+#include "msgpack/object.h"
 
 #include <typeinfo>
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -73,6 +73,6 @@ class type_error;
 } // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-} // namespace clmdep_msgpack
+} // namespace msgpack
 
 #endif // MSGPACK_V1_OBJECT_FWD_DECL_HPP

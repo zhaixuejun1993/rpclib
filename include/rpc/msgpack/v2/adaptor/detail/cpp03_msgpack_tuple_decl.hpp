@@ -10,9 +10,9 @@
 #ifndef MSGPACK_V2_CPP03_MSGPACK_TUPLE_DECL_HPP
 #define MSGPACK_V2_CPP03_MSGPACK_TUPLE_DECL_HPP
 
-#include "rpc/msgpack/v1/adaptor/detail/cpp03_msgpack_tuple_decl.hpp"
+#include "msgpack/v1/adaptor/detail/cpp03_msgpack_tuple_decl.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v2) {
@@ -38,6 +38,6 @@ using v1::type::make_tuple;
 }  // MSGPACK_API_VERSION_NAMESPACE(v2)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V2_CPP03_MSGPACK_TUPLE_DECL_HPP

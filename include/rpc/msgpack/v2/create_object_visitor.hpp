@@ -10,11 +10,11 @@
 #ifndef MSGPACK_V2_CREATE_OBJECT_VISITOR_HPP
 #define MSGPACK_V2_CREATE_OBJECT_VISITOR_HPP
 
-#include "rpc/msgpack/unpack_decl.hpp"
-#include "rpc/msgpack/unpack_exception.hpp"
-#include "rpc/msgpack/v2/null_visitor.hpp"
+#include "msgpack/unpack_decl.hpp"
+#include "msgpack/unpack_exception.hpp"
+#include "msgpack/v2/null_visitor.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v2) {
@@ -22,7 +22,7 @@ MSGPACK_API_VERSION_NAMESPACE(v2) {
 
 namespace detail {
 
-class create_object_visitor : public clmdep_msgpack::v2::null_visitor {
+class create_object_visitor : public msgpack::v2::null_visitor {
 public:
     create_object_visitor(unpack_reference_func f, void* user_data, unpack_limit const& limit)
         :m_func(f), m_user_data(user_data), m_limit(limit) {
@@ -50,64 +50,64 @@ public:
 
     void init() {
         m_stack.resize(1);
-        m_obj = clmdep_msgpack::object();
+        m_obj = msgpack::object();
         m_stack[0] = &m_obj;
     }
-    clmdep_msgpack::object const& data() const
+    msgpack::object const& data() const
     {
         return m_obj;
     }
-    clmdep_msgpack::zone const& zone() const { return *m_zone; }
-    clmdep_msgpack::zone& zone() { return *m_zone; }
-    void set_zone(clmdep_msgpack::zone& zone) { m_zone = &zone; }
+    msgpack::zone const& zone() const { return *m_zone; }
+    msgpack::zone& zone() { return *m_zone; }
+    void set_zone(msgpack::zone& zone) { m_zone = &zone; }
     bool referenced() const { return m_referenced; }
     void set_referenced(bool referenced) { m_referenced = referenced; }
     // visit functions
     bool visit_nil() {
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::NIL;
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::NIL;
         return true;
     }
     bool visit_boolean(bool v) {
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::BOOLEAN;
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::BOOLEAN;
         obj->via.boolean = v;
         return true;
     }
     bool visit_positive_integer(uint64_t v) {
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::POSITIVE_INTEGER;
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::POSITIVE_INTEGER;
         obj->via.u64 = v;
         return true;
     }
     bool visit_negative_integer(int64_t v) {
-        clmdep_msgpack::object* obj = m_stack.back();
+        msgpack::object* obj = m_stack.back();
         if(v >= 0) {
-            obj->type = clmdep_msgpack::type::POSITIVE_INTEGER;
+            obj->type = msgpack::type::POSITIVE_INTEGER;
             obj->via.u64 = v;
         }
         else {
-            obj->type = clmdep_msgpack::type::NEGATIVE_INTEGER;
+            obj->type = msgpack::type::NEGATIVE_INTEGER;
             obj->via.i64 = v;
         }
         return true;
     }
     bool visit_float32(float v) {
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::FLOAT32;
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::FLOAT32;
         obj->via.f64 = v;
         return true;
     }
     bool visit_float64(double v) {
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::FLOAT64;
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::FLOAT64;
         obj->via.f64 = v;
         return true;
     }
     bool visit_str(const char* v, uint32_t size) {
-        if (size > m_limit.str()) throw clmdep_msgpack::str_size_overflow("str size overflow");
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::STR;
+        if (size > m_limit.str()) throw msgpack::str_size_overflow("str size overflow");
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::STR;
         if (m_func && m_func(obj->type, size, m_user_data)) {
             obj->via.str.ptr = v;
             set_referenced(true);
@@ -121,9 +121,9 @@ public:
         return true;
     }
     bool visit_bin(const char* v, uint32_t size) {
-        if (size > m_limit.bin()) throw clmdep_msgpack::bin_size_overflow("bin size overflow");
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::BIN;
+        if (size > m_limit.bin()) throw msgpack::bin_size_overflow("bin size overflow");
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::BIN;
         if (m_func && m_func(obj->type, size, m_user_data)) {
             obj->via.bin.ptr = v;
             set_referenced(true);
@@ -137,9 +137,9 @@ public:
         return true;
     }
     bool visit_ext(const char* v, uint32_t size) {
-        if (size > m_limit.ext()) throw clmdep_msgpack::ext_size_overflow("ext size overflow");
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::EXT;
+        if (size > m_limit.ext()) throw msgpack::ext_size_overflow("ext size overflow");
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::EXT;
         if (m_func && m_func(obj->type, size, m_user_data)) {
             obj->via.ext.ptr = v;
             set_referenced(true);
@@ -153,21 +153,21 @@ public:
         return true;
     }
     bool start_array(uint32_t num_elements) {
-        if (num_elements > m_limit.array()) throw clmdep_msgpack::array_size_overflow("array size overflow");
-        if (m_stack.size() > m_limit.depth()) throw clmdep_msgpack::depth_size_overflow("depth size overflow");
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::ARRAY;
+        if (num_elements > m_limit.array()) throw msgpack::array_size_overflow("array size overflow");
+        if (m_stack.size() > m_limit.depth()) throw msgpack::depth_size_overflow("depth size overflow");
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::ARRAY;
         obj->via.array.size = num_elements;
         if (num_elements == 0) {
             obj->via.array.ptr = MSGPACK_NULLPTR;
         }
         else {
-            size_t size = num_elements*sizeof(clmdep_msgpack::object);
-            if (size / sizeof(clmdep_msgpack::object) != num_elements) {
-                throw clmdep_msgpack::array_size_overflow("array size overflow");
+            size_t size = num_elements*sizeof(msgpack::object);
+            if (size / sizeof(msgpack::object) != num_elements) {
+                throw msgpack::array_size_overflow("array size overflow");
             }
             obj->via.array.ptr =
-                static_cast<clmdep_msgpack::object*>(m_zone->allocate_align(size, MSGPACK_ZONE_ALIGNOF(clmdep_msgpack::object)));
+                static_cast<msgpack::object*>(m_zone->allocate_align(size, MSGPACK_ZONE_ALIGNOF(msgpack::object)));
         }
         m_stack.push_back(obj->via.array.ptr);
         return true;
@@ -184,23 +184,23 @@ public:
         return true;
     }
     bool start_map(uint32_t num_kv_pairs) {
-        if (num_kv_pairs > m_limit.map()) throw clmdep_msgpack::map_size_overflow("map size overflow");
-        if (m_stack.size() > m_limit.depth()) throw clmdep_msgpack::depth_size_overflow("depth size overflow");
-        clmdep_msgpack::object* obj = m_stack.back();
-        obj->type = clmdep_msgpack::type::MAP;
+        if (num_kv_pairs > m_limit.map()) throw msgpack::map_size_overflow("map size overflow");
+        if (m_stack.size() > m_limit.depth()) throw msgpack::depth_size_overflow("depth size overflow");
+        msgpack::object* obj = m_stack.back();
+        obj->type = msgpack::type::MAP;
         obj->via.map.size = num_kv_pairs;
         if (num_kv_pairs == 0) {
             obj->via.map.ptr = MSGPACK_NULLPTR;
         }
         else {
-            size_t size = num_kv_pairs*sizeof(clmdep_msgpack::object_kv);
-            if (size / sizeof(clmdep_msgpack::object_kv) != num_kv_pairs) {
-                throw clmdep_msgpack::map_size_overflow("map size overflow");
+            size_t size = num_kv_pairs*sizeof(msgpack::object_kv);
+            if (size / sizeof(msgpack::object_kv) != num_kv_pairs) {
+                throw msgpack::map_size_overflow("map size overflow");
             }
             obj->via.map.ptr =
-                static_cast<clmdep_msgpack::object_kv*>(m_zone->allocate_align(size, MSGPACK_ZONE_ALIGNOF(clmdep_msgpack::object_kv)));
+                static_cast<msgpack::object_kv*>(m_zone->allocate_align(size, MSGPACK_ZONE_ALIGNOF(msgpack::object_kv)));
         }
-        m_stack.push_back(reinterpret_cast<clmdep_msgpack::object*>(obj->via.map.ptr));
+        m_stack.push_back(reinterpret_cast<msgpack::object*>(obj->via.map.ptr));
         return true;
     }
     bool start_map_key() {
@@ -222,19 +222,19 @@ public:
         return true;
     }
     void parse_error(size_t /*parsed_offset*/, size_t /*error_offset*/) {
-        throw clmdep_msgpack::parse_error("parse error");
+        throw msgpack::parse_error("parse error");
     }
     void insufficient_bytes(size_t /*parsed_offset*/, size_t /*error_offset*/) {
-        throw clmdep_msgpack::insufficient_bytes("insufficient bytes");
+        throw msgpack::insufficient_bytes("insufficient bytes");
     }
 private:
 public:
     unpack_reference_func m_func;
     void* m_user_data;
     unpack_limit m_limit;
-    clmdep_msgpack::object m_obj;
-    std::vector<clmdep_msgpack::object*> m_stack;
-    clmdep_msgpack::zone* m_zone;
+    msgpack::object m_obj;
+    std::vector<msgpack::object*> m_stack;
+    msgpack::zone* m_zone;
     bool m_referenced;
 };
 
@@ -244,6 +244,6 @@ public:
 }  // MSGPACK_API_VERSION_NAMESPACE(v2)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V2_CREATE_OBJECT_VISITOR_HPP

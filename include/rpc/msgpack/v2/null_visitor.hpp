@@ -10,10 +10,10 @@
 #ifndef MSGPACK_V2_NULL_VISITOR_HPP
 #define MSGPACK_V2_NULL_VISITOR_HPP
 
-#include "rpc/msgpack/versioning.hpp"
-#include "rpc/msgpack/cpp_config.hpp"
+#include "msgpack/versioning.hpp"
+#include "msgpack/cpp_config.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v2) {
@@ -92,6 +92,6 @@ struct null_visitor {
 }  // MSGPACK_API_VERSION_NAMESPACE(v2)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V2_NULL_VISITOR_HPP

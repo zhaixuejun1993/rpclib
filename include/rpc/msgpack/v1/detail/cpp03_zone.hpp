@@ -10,10 +10,10 @@
 #ifndef MSGPACK_V1_CPP03_ZONE_HPP
 #define MSGPACK_V1_CPP03_ZONE_HPP
 
-#include "rpc/msgpack/zone_decl.hpp"
+#include "msgpack/zone_decl.hpp"
 
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -139,7 +139,7 @@ public:
     void push_finalizer(void (*func)(void*), void* data);
 
     template <typename T>
-    void push_finalizer(clmdep_msgpack::unique_ptr<T> obj);
+    void push_finalizer(msgpack::unique_ptr<T> obj);
 
     void clear();
 
@@ -304,7 +304,7 @@ inline void zone::push_finalizer(void (*func)(void*), void* data)
 }
 
 template <typename T>
-inline void zone::push_finalizer(clmdep_msgpack::unique_ptr<T> obj)
+inline void zone::push_finalizer(msgpack::unique_ptr<T> obj)
 {
     m_finalizer_array.push(&zone::object_delete<T>, obj.release());
 }
@@ -659,6 +659,6 @@ T* zone::allocate(A1 a1, A2 a2, A3 a3, A4 a4, A5 a5, A6 a6, A7 a7, A8 a8, A9 a9,
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V1_CPP03_ZONE_HPP

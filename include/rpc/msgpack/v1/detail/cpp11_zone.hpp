@@ -10,15 +10,15 @@
 #ifndef MSGPACK_CPP11_ZONE_HPP
 #define MSGPACK_CPP11_ZONE_HPP
 
-#include "rpc/msgpack/versioning.hpp"
-#include "rpc/msgpack/cpp_config.hpp"
-#include "rpc/msgpack/zone_decl.hpp"
+#include "msgpack/versioning.hpp"
+#include "msgpack/cpp_config.hpp"
+#include "msgpack/zone_decl.hpp"
 
 #include <cstdlib>
 #include <memory>
 #include <vector>
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -178,7 +178,7 @@ public:
     void push_finalizer(void (*func)(void*), void* data);
 
     template <typename T>
-    void push_finalizer(clmdep_msgpack::unique_ptr<T> obj);
+    void push_finalizer(msgpack::unique_ptr<T> obj);
 
     void clear();
 
@@ -297,7 +297,7 @@ inline void zone::push_finalizer(void (*func)(void*), void* data)
 }
 
 template <typename T>
-inline void zone::push_finalizer(clmdep_msgpack::unique_ptr<T> obj)
+inline void zone::push_finalizer(msgpack::unique_ptr<T> obj)
 {
     m_finalizer_array.push(&zone::object_delete<T>, obj.release());
 }
@@ -361,6 +361,6 @@ inline std::size_t aligned_size(
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_CPP11_ZONE_HPP

@@ -10,11 +10,11 @@
 #ifndef MSGPACK_V1_TYPE_MAP_DECL_HPP
 #define MSGPACK_V1_TYPE_MAP_DECL_HPP
 
-#include "rpc/msgpack/versioning.hpp"
+#include "msgpack/versioning.hpp"
 
 #include <algorithm>
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -31,6 +31,6 @@ class assoc_vector;
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V1_TYPE_MAP_DECL_HPP

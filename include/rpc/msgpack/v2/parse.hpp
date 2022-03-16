@@ -10,10 +10,10 @@
 #ifndef MSGPACK_V2_PARSE_HPP
 #define MSGPACK_V2_PARSE_HPP
 
-#include "rpc/msgpack/unpack_decl.hpp"
-#include "rpc/msgpack/v2/create_object_visitor.hpp"
+#include "msgpack/unpack_decl.hpp"
+#include "msgpack/v2/create_object_visitor.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v2) {
@@ -218,7 +218,7 @@ inline void check_ext_size(std::size_t /*size*/) {
 
 template <>
 inline void check_ext_size<4>(std::size_t size) {
-    if (size == 0xffffffff) throw clmdep_msgpack::ext_size_overflow("ext size overflow");
+    if (size == 0xffffffff) throw msgpack::ext_size_overflow("ext size overflow");
 }
 
 template <typename VisitorHolder>
@@ -231,7 +231,7 @@ inline parse_return context<VisitorHolder>::execute(const char* data, std::size_
     const char* const pe = data + len;
     const char* n = MSGPACK_NULLPTR;
 
-    clmdep_msgpack::object obj;
+    msgpack::object obj;
 
     if(m_current == pe) {
         off = m_current - m_start;
@@ -622,10 +622,10 @@ public:
     /// Constructor
     /**
      * @param referenced If the unpacked object contains reference of the buffer, then set as true, otherwise false.
-     * @param f A judging function that clmdep_msgpack::object refer to the buffer.
+     * @param f A judging function that msgpack::object refer to the buffer.
      * @param user_data This parameter is passed to f.
      * @param initial_buffer_size The memory size to allocate when unpacker is constructed.
-     * @param limit The size limit information of clmdep_msgpack::object.
+     * @param limit The size limit information of msgpack::object.
      *
      */
     parser(ReferencedBufferHook& hook,
@@ -666,7 +666,7 @@ public:
      */
     std::size_t buffer_capacity() const;
 
-    /// Notify a buffer consumed information to clmdep_msgpack::unpacker.
+    /// Notify a buffer consumed information to msgpack::unpacker.
     /**
      * @param size The size of memory that you consumed.
      *
@@ -678,13 +678,13 @@ public:
      */
     void buffer_consumed(std::size_t size);
 
-    /// Unpack one clmdep_msgpack::object.
+    /// Unpack one msgpack::object.
     /**
      *
      *
-     * @return If one clmdep_msgpack::object is unpacked, then return true, if clmdep_msgpack::object is incomplete
+     * @return If one msgpack::object is unpacked, then return true, if msgpack::object is incomplete
      *         and additional data is required, then return false. If data format is invalid, throw
-     *         clmdep_msgpack::parse_error.
+     *         msgpack::parse_error.
      *
      * See:
      * https://github.com/msgpack/msgpack-c/wiki/v1_1_cpp_unpacker#msgpack-controls-a-buffer
@@ -1055,7 +1055,7 @@ parse_imp(const char* data, size_t len, size_t& off, Visitor& v) {
 }  // MSGPACK_API_VERSION_NAMESPACE(v2)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 
 #endif // MSGPACK_V2_PARSE_HPP

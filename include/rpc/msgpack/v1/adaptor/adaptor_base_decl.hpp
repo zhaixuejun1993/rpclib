@@ -10,11 +10,11 @@
 #ifndef MSGPACK_V1_ADAPTOR_BASE_DECL_HPP
 #define MSGPACK_V1_ADAPTOR_BASE_DECL_HPP
 
-#include "rpc/msgpack/versioning.hpp"
-#include "rpc/msgpack/object_fwd.hpp"
-#include "rpc/msgpack/pack.hpp"
+#include "msgpack/versioning.hpp"
+#include "msgpack/object_fwd.hpp"
+#include "msgpack/pack.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -44,44 +44,43 @@ struct object_with_zone;
 // operators
 
 template <typename T>
-typename clmdep_msgpack::enable_if<
+typename msgpack::enable_if<
     !is_array<T>::value,
-    clmdep_msgpack::object const&
+    msgpack::object const&
 >::type
-operator>> (clmdep_msgpack::object const& o, T& v);
+operator>> (msgpack::object const& o, T& v);
 template <typename T, std::size_t N>
-clmdep_msgpack::object const& operator>> (clmdep_msgpack::object const& o, T(&v)[N]);
+msgpack::object const& operator>> (msgpack::object const& o, T(&v)[N]);
 
 template <typename Stream, typename T>
-typename clmdep_msgpack::enable_if<
+typename msgpack::enable_if<
     !is_array<T>::value,
-    clmdep_msgpack::packer<Stream>&
+    msgpack::packer<Stream>&
 >::type
-operator<< (clmdep_msgpack::packer<Stream>& o, T const& v);
-
+operator<< (msgpack::packer<Stream>& o, T const& v);
 template <typename Stream, typename T, std::size_t N>
-clmdep_msgpack::packer<Stream>& operator<< (clmdep_msgpack::packer<Stream>& o, const T(&v)[N]);
+msgpack::packer<Stream>& operator<< (msgpack::packer<Stream>& o, const T(&v)[N]);
 
 template <typename T>
-typename clmdep_msgpack::enable_if<
+typename msgpack::enable_if<
     !is_array<T>::value
 >::type
-operator<< (clmdep_msgpack::object& o, T const& v);
+operator<< (msgpack::object& o, T const& v);
 template <typename T, std::size_t N>
-void operator<< (clmdep_msgpack::object& o, const T(&v)[N]);
+void operator<< (msgpack::object& o, const T(&v)[N]);
 
 template <typename T>
-typename clmdep_msgpack::enable_if<
+typename msgpack::enable_if<
     !is_array<T>::value
 >::type
-operator<< (clmdep_msgpack::object::with_zone& o, T const& v);
+operator<< (msgpack::object::with_zone& o, T const& v);
 template <typename T, std::size_t N>
-void operator<< (clmdep_msgpack::object::with_zone& o, const T(&v)[N]);
+void operator<< (msgpack::object::with_zone& o, const T(&v)[N]);
 
 /// @cond
 } // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-} // namespace clmdep_msgpack
+} // namespace msgpack
 
 #endif // MSGPACK_V1_ADAPTOR_BASE_DECL_HPP

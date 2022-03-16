@@ -13,9 +13,9 @@
 
 #if !defined(MSGPACK_USE_CPP03)
 
-#include "rpc/msgpack/v1/meta_decl.hpp"
+#include "msgpack/v1/meta_decl.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -46,7 +46,7 @@ struct gen_seq<0, Is...> : seq<Is...> {};
 } // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-} // namespace clmdep_msgpack
+} // namespace msgpack
 
 #endif // !defined(MSGPACK_USE_CPP03)
 

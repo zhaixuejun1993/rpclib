@@ -10,7 +10,7 @@
 #ifndef MSGPACK_V1_VREFBUFFER_DECL_HPP
 #define MSGPACK_V1_VREFBUFFER_DECL_HPP
 
-#include "rpc/msgpack/versioning.hpp"
+#include "msgpack/versioning.hpp"
 
 #include <cstdlib>
 
@@ -22,7 +22,7 @@
 #define MSGPACK_VREFBUFFER_CHUNK_SIZE 8192
 #endif
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -34,6 +34,6 @@ class vrefbuffer;
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V1_VREFBUFFER_DECL_HPP

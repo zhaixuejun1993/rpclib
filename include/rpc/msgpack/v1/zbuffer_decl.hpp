@@ -10,7 +10,7 @@
 #ifndef MSGPACK_V1_ZBUFFER_DECL_HPP
 #define MSGPACK_V1_ZBUFFER_DECL_HPP
 
-#include "rpc/msgpack/versioning.hpp"
+#include "msgpack/versioning.hpp"
 
 #ifndef MSGPACK_ZBUFFER_RESERVE_SIZE
 #define MSGPACK_ZBUFFER_RESERVE_SIZE 512
@@ -20,7 +20,7 @@
 #define MSGPACK_ZBUFFER_INIT_SIZE 8192
 #endif
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -32,6 +32,6 @@ class zbuffer;
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V1_ZBUFFER_DECL_HPP

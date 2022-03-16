@@ -10,9 +10,9 @@
 #ifndef MSGPACK_V1_TYPE_NIL_HPP
 #define MSGPACK_V1_TYPE_NIL_HPP
 
-#include "rpc/msgpack/v1/adaptor/nil_decl.hpp"
+#include "msgpack/v1/adaptor/nil_decl.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -36,8 +36,8 @@ namespace adaptor {
 
 template <>
 struct convert<type::nil_t> {
-    clmdep_msgpack::object const& operator()(clmdep_msgpack::object const& o, type::nil_t&) const {
-        if(o.type != clmdep_msgpack::type::NIL) { throw clmdep_msgpack::type_error(); }
+    msgpack::object const& operator()(msgpack::object const& o, type::nil_t&) const {
+        if(o.type != msgpack::type::NIL) { throw msgpack::type_error(); }
         return o;
     }
 };
@@ -45,7 +45,7 @@ struct convert<type::nil_t> {
 template <>
 struct pack<type::nil_t> {
     template <typename Stream>
-    clmdep_msgpack::packer<Stream>& operator()(clmdep_msgpack::packer<Stream>& o, const type::nil_t&) const {
+    msgpack::packer<Stream>& operator()(msgpack::packer<Stream>& o, const type::nil_t&) const {
         o.pack_nil();
         return o;
     }
@@ -53,15 +53,15 @@ struct pack<type::nil_t> {
 
 template <>
 struct object<type::nil_t> {
-    void operator()(clmdep_msgpack::object& o, type::nil_t) const {
-        o.type = clmdep_msgpack::type::NIL;
+    void operator()(msgpack::object& o, type::nil_t) const {
+        o.type = msgpack::type::NIL;
     }
 };
 
 template <>
 struct object_with_zone<type::nil_t> {
-    void operator()(clmdep_msgpack::object::with_zone& o, type::nil_t v) const {
-        static_cast<clmdep_msgpack::object&>(o) << v;
+    void operator()(msgpack::object::with_zone& o, type::nil_t v) const {
+        static_cast<msgpack::object&>(o) << v;
     }
 };
 
@@ -71,6 +71,6 @@ struct object_with_zone<type::nil_t> {
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V1_TYPE_NIL_HPP

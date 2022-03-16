@@ -18,27 +18,27 @@
 #define MSGPACK_PP_VARIADICS
 #endif
 
-#include <rpc/msgpack/preprocessor.hpp>
+#include <msgpack/preprocessor.hpp>
 
-#include "rpc/msgpack/versioning.hpp"
+#include "msgpack/versioning.hpp"
 
 // for MSGPACK_ADD_ENUM
-#include "rpc/msgpack/adaptor/int.hpp"
+#include "msgpack/adaptor/int.hpp"
 
 #define MSGPACK_DEFINE_ARRAY(...) \
     template <typename Packer> \
     void msgpack_pack(Packer& pk) const \
     { \
-        clmdep_msgpack::type::make_define_array(__VA_ARGS__).msgpack_pack(pk); \
+        msgpack::type::make_define_array(__VA_ARGS__).msgpack_pack(pk); \
     } \
-    void msgpack_unpack(clmdep_msgpack::object const& o) \
+    void msgpack_unpack(msgpack::object const& o) \
     { \
-        clmdep_msgpack::type::make_define_array(__VA_ARGS__).msgpack_unpack(o); \
+        msgpack::type::make_define_array(__VA_ARGS__).msgpack_unpack(o); \
     }\
     template <typename MSGPACK_OBJECT> \
-    void msgpack_object(MSGPACK_OBJECT* o, clmdep_msgpack::zone& z) const \
+    void msgpack_object(MSGPACK_OBJECT* o, msgpack::zone& z) const \
     { \
-        clmdep_msgpack::type::make_define_array(__VA_ARGS__).msgpack_object(o, z); \
+        msgpack::type::make_define_array(__VA_ARGS__).msgpack_object(o, z); \
     }
 
 #define MSGPACK_BASE_ARRAY(base) (*const_cast<base *>(static_cast<base const*>(this)))
@@ -64,20 +64,20 @@
     template <typename Packer> \
     void msgpack_pack(Packer& pk) const \
     { \
-        clmdep_msgpack::type::make_define_map \
+        msgpack::type::make_define_map \
             MSGPACK_DEFINE_MAP_IMPL(__VA_ARGS__) \
             .msgpack_pack(pk); \
     } \
-    void msgpack_unpack(clmdep_msgpack::object const& o) \
+    void msgpack_unpack(msgpack::object const& o) \
     { \
-        clmdep_msgpack::type::make_define_map \
+        msgpack::type::make_define_map \
             MSGPACK_DEFINE_MAP_IMPL(__VA_ARGS__) \
             .msgpack_unpack(o); \
     }\
     template <typename MSGPACK_OBJECT> \
-    void msgpack_object(MSGPACK_OBJECT* o, clmdep_msgpack::zone& z) const \
+    void msgpack_object(MSGPACK_OBJECT* o, msgpack::zone& z) const \
     { \
-        clmdep_msgpack::type::make_define_map \
+        msgpack::type::make_define_map \
             MSGPACK_DEFINE_MAP_IMPL(__VA_ARGS__) \
             .msgpack_object(o, z); \
     }
@@ -87,39 +87,39 @@
 
 // MSGPACK_ADD_ENUM must be used in the global namespace.
 #define MSGPACK_ADD_ENUM(enum_name) \
-  namespace clmdep_msgpack { \
+  namespace msgpack { \
   /** @cond */ \
   MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) { \
   /** @endcond */ \
   namespace adaptor { \
     template<> \
     struct convert<enum_name> { \
-      clmdep_msgpack::object const& operator()(clmdep_msgpack::object const& o, enum_name& v) const { \
-        clmdep_msgpack::underlying_type<enum_name>::type tmp; \
-        clmdep_msgpack::operator>>(o, tmp);                   \
+      msgpack::object const& operator()(msgpack::object const& o, enum_name& v) const { \
+        msgpack::underlying_type<enum_name>::type tmp; \
+        msgpack::operator>>(o, tmp);                   \
         v = static_cast<enum_name>(tmp);   \
         return o; \
       } \
     }; \
     template<> \
     struct object<enum_name> { \
-      void operator()(clmdep_msgpack::object& o, const enum_name& v) const { \
-        clmdep_msgpack::underlying_type<enum_name>::type tmp = static_cast<clmdep_msgpack::underlying_type<enum_name>::type>(v); \
-        clmdep_msgpack::operator<<(o, tmp);                                    \
+      void operator()(msgpack::object& o, const enum_name& v) const { \
+        msgpack::underlying_type<enum_name>::type tmp = static_cast<msgpack::underlying_type<enum_name>::type>(v); \
+        msgpack::operator<<(o, tmp);                                    \
       } \
     }; \
     template<> \
     struct object_with_zone<enum_name> { \
-      void operator()(clmdep_msgpack::object::with_zone& o, const enum_name& v) const {  \
-        clmdep_msgpack::underlying_type<enum_name>::type tmp = static_cast<clmdep_msgpack::underlying_type<enum_name>::type>(v); \
-        clmdep_msgpack::operator<<(o, tmp);                                    \
+      void operator()(msgpack::object::with_zone& o, const enum_name& v) const {  \
+        msgpack::underlying_type<enum_name>::type tmp = static_cast<msgpack::underlying_type<enum_name>::type>(v); \
+        msgpack::operator<<(o, tmp);                                    \
       } \
     }; \
     template <> \
     struct pack<enum_name> { \
       template <typename Stream> \
-      clmdep_msgpack::packer<Stream>& operator()(clmdep_msgpack::packer<Stream>& o, const enum_name& v) const { \
-          return clmdep_msgpack::operator<<(o, static_cast<clmdep_msgpack::underlying_type<enum_name>::type>(v)); \
+      msgpack::packer<Stream>& operator()(msgpack::packer<Stream>& o, const enum_name& v) const { \
+          return msgpack::operator<<(o, static_cast<msgpack::underlying_type<enum_name>::type>(v)); \
       } \
     }; \
   } \
@@ -137,7 +137,7 @@
 #endif // defined(MSGPACK_USE_DEFINE_MAP)
 
 
-#include "rpc/msgpack/v1/adaptor/define_decl.hpp"
-#include "rpc/msgpack/v2/adaptor/define_decl.hpp"
+#include "msgpack/v1/adaptor/define_decl.hpp"
+#include "msgpack/v2/adaptor/define_decl.hpp"
 
 #endif // MSGPACK_DEFINE_DECL_HPP

@@ -12,9 +12,9 @@
 #define MSGPACK_V2_ITERATOR_DECL_HPP
 #if !defined(MSGPACK_USE_CPP03)
 
-#include <rpc/msgpack/v1/iterator_decl.hpp>
+#include <msgpack/v1/iterator_decl.hpp>
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v2) {

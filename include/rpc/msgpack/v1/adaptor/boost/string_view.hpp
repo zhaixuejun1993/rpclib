@@ -13,13 +13,13 @@
 #include <boost/version.hpp>
 #if (BOOST_VERSION / 100000) >= 1 && ((BOOST_VERSION / 100) % 1000) >= 61
 
-#include "rpc/msgpack/versioning.hpp"
-#include "rpc/msgpack/adaptor/adaptor_base.hpp"
-#include "rpc/msgpack/adaptor/check_container_size.hpp"
+#include "msgpack/versioning.hpp"
+#include "msgpack/adaptor/adaptor_base.hpp"
+#include "msgpack/adaptor/check_container_size.hpp"
 
 #include <boost/utility/string_view.hpp>
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -29,16 +29,16 @@ namespace adaptor {
 
 template <>
 struct convert<boost::string_view> {
-    clmdep_msgpack::object const& operator()(clmdep_msgpack::object const& o, boost::string_view& v) const {
+    msgpack::object const& operator()(msgpack::object const& o, boost::string_view& v) const {
         switch (o.type) {
-        case clmdep_msgpack::type::BIN:
+        case msgpack::type::BIN:
             v = boost::string_view(o.via.bin.ptr, o.via.bin.size);
             break;
-        case clmdep_msgpack::type::STR:
+        case msgpack::type::STR:
             v = boost::string_view(o.via.str.ptr, o.via.str.size);
             break;
         default:
-            throw clmdep_msgpack::type_error();
+            throw msgpack::type_error();
             break;
         }
         return o;
@@ -48,7 +48,7 @@ struct convert<boost::string_view> {
 template <>
 struct pack<boost::string_view> {
     template <typename Stream>
-    clmdep_msgpack::packer<Stream>& operator()(clmdep_msgpack::packer<Stream>& o, const boost::string_view& v) const {
+    msgpack::packer<Stream>& operator()(msgpack::packer<Stream>& o, const boost::string_view& v) const {
         uint32_t size = checked_get_container_size(v.size());
         o.pack_str(size);
         o.pack_str_body(v.data(), size);
@@ -58,9 +58,9 @@ struct pack<boost::string_view> {
 
 template <>
 struct object<boost::string_view> {
-    void operator()(clmdep_msgpack::object& o, const boost::string_view& v) const {
+    void operator()(msgpack::object& o, const boost::string_view& v) const {
         uint32_t size = checked_get_container_size(v.size());
-        o.type = clmdep_msgpack::type::STR;
+        o.type = msgpack::type::STR;
         o.via.str.ptr = v.data();
         o.via.str.size = size;
     }
@@ -68,8 +68,8 @@ struct object<boost::string_view> {
 
 template <>
 struct object_with_zone<boost::string_view> {
-    void operator()(clmdep_msgpack::object::with_zone& o, const boost::string_view& v) const {
-        static_cast<clmdep_msgpack::object&>(o) << v;
+    void operator()(msgpack::object::with_zone& o, const boost::string_view& v) const {
+        static_cast<msgpack::object&>(o) << v;
     }
 };
 
@@ -80,7 +80,7 @@ struct object_with_zone<boost::string_view> {
 } // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-} // namespace clmdep_msgpack
+} // namespace msgpack
 
 #endif // (BOOST_VERSION / 100000) >= 1 && ((BOOST_VERSION / 100) % 1000) >= 53
 

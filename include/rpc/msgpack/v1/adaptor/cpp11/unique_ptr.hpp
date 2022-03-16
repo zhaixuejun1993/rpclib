@@ -11,13 +11,13 @@
 #ifndef MSGPACK_V1_TYPE_CPP11_UNIQUE_PTR_HPP
 #define MSGPACK_V1_TYPE_CPP11_UNIQUE_PTR_HPP
 
-#include "rpc/msgpack/versioning.hpp"
-#include "rpc/msgpack/adaptor/adaptor_base.hpp"
-#include "rpc/msgpack/adaptor/check_container_size.hpp"
+#include "msgpack/versioning.hpp"
+#include "msgpack/adaptor/adaptor_base.hpp"
+#include "msgpack/adaptor/check_container_size.hpp"
 
 #include <memory>
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -26,8 +26,8 @@ MSGPACK_API_VERSION_NAMESPACE(v1) {
 namespace adaptor {
 
 template <typename T>
-struct as<std::unique_ptr<T>, typename std::enable_if<clmdep_msgpack::has_as<T>::value>::type> {
-    std::unique_ptr<T> operator()(clmdep_msgpack::object const& o) const {
+struct as<std::unique_ptr<T>, typename std::enable_if<msgpack::has_as<T>::value>::type> {
+    std::unique_ptr<T> operator()(msgpack::object const& o) const {
         if(o.is_nil()) return MSGPACK_NULLPTR;
         return std::unique_ptr<T>(new T(o.as<T>()));
     }
@@ -35,11 +35,11 @@ struct as<std::unique_ptr<T>, typename std::enable_if<clmdep_msgpack::has_as<T>:
 
 template <typename T>
 struct convert<std::unique_ptr<T>> {
-    clmdep_msgpack::object const& operator()(clmdep_msgpack::object const& o, std::unique_ptr<T>& v) const {
+    msgpack::object const& operator()(msgpack::object const& o, std::unique_ptr<T>& v) const {
         if(o.is_nil()) v.reset();
         else {
             v.reset(new T);
-            clmdep_msgpack::adaptor::convert<T>()(o, *v);
+            msgpack::adaptor::convert<T>()(o, *v);
         }
         return o;
     }
@@ -48,7 +48,7 @@ struct convert<std::unique_ptr<T>> {
 template <typename T>
 struct pack<std::unique_ptr<T>> {
     template <typename Stream>
-    clmdep_msgpack::packer<Stream>& operator()(clmdep_msgpack::packer<Stream>& o, const std::unique_ptr<T>& v) const {
+    msgpack::packer<Stream>& operator()(msgpack::packer<Stream>& o, const std::unique_ptr<T>& v) const {
         if (v) o.pack(*v);
         else o.pack_nil();
         return o;
@@ -57,17 +57,17 @@ struct pack<std::unique_ptr<T>> {
 
 template <typename T>
 struct object<std::unique_ptr<T> > {
-    void operator()(clmdep_msgpack::object& o, const std::unique_ptr<T>& v) const {
-        if (v) clmdep_msgpack::adaptor::object<T>()(o, *v);
-        else o.type = clmdep_msgpack::type::NIL;
+    void operator()(msgpack::object& o, const std::unique_ptr<T>& v) const {
+        if (v) msgpack::adaptor::object<T>()(o, *v);
+        else o.type = msgpack::type::NIL;
     }
 };
 
 template <typename T>
 struct object_with_zone<std::unique_ptr<T>> {
-    void operator()(clmdep_msgpack::object::with_zone& o, const std::unique_ptr<T>& v) const {
-        if (v) clmdep_msgpack::adaptor::object_with_zone<T>()(o, *v);
-        else o.type = clmdep_msgpack::type::NIL;
+    void operator()(msgpack::object::with_zone& o, const std::unique_ptr<T>& v) const {
+        if (v) msgpack::adaptor::object_with_zone<T>()(o, *v);
+        else o.type = msgpack::type::NIL;
     }
 };
 
@@ -77,6 +77,6 @@ struct object_with_zone<std::unique_ptr<T>> {
 } // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-} // namespace clmdep_msgpack
+} // namespace msgpack
 
 #endif // MSGPACK_V1_TYPE_CPP11_UNIQUE_PTR_HPP

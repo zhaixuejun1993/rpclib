@@ -10,10 +10,10 @@
 #ifndef MSGPACK_V1_CPP11_DEFINE_ARRAY_DECL_HPP
 #define MSGPACK_V1_CPP11_DEFINE_ARRAY_DECL_HPP
 
-#include "rpc/msgpack/versioning.hpp"
-#include "rpc/msgpack/adaptor/adaptor_base.hpp"
+#include "msgpack/versioning.hpp"
+#include "msgpack/adaptor/adaptor_base.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
 /// @endcond
@@ -34,6 +34,6 @@ inline define_array<Args...> make_define_array(Args&... args);
 /// @cond
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V1_CPP11_DEFINE_ARRAY_DECL_HPP

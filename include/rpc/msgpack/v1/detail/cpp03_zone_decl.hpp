@@ -14,7 +14,7 @@
 #include <memory>
 #include <vector>
 
-#include "rpc/msgpack/versioning.hpp"
+#include "msgpack/versioning.hpp"
 
 #ifndef MSGPACK_ZONE_CHUNK_SIZE
 #define MSGPACK_ZONE_CHUNK_SIZE 8192
@@ -33,7 +33,7 @@
 // #define MSGPACK_ZONE_ALIGNOF(type) MSGPACK_ZONE_ALIGN
 
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v1) {
@@ -49,6 +49,6 @@ std::size_t aligned_size(
 }  // MSGPACK_API_VERSION_NAMESPACE(v1)
 /// @endcond
 
-}  // namespace clmdep_msgpack
+}  // namespace msgpack
 
 #endif // MSGPACK_V1_CPP03_ZONE_DECL_HPP

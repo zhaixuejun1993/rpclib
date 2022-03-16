@@ -10,9 +10,9 @@
 #ifndef MSGPACK_V2_TYPE_SIZE_EQUAL_ONLY_DECL_HPP
 #define MSGPACK_V2_TYPE_SIZE_EQUAL_ONLY_DECL_HPP
 
-#include "rpc/msgpack/v1/adaptor/size_equal_only_decl.hpp"
+#include "msgpack/v1/adaptor/size_equal_only_decl.hpp"
 
-namespace clmdep_msgpack {
+namespace msgpack {
 
 /// @cond
 MSGPACK_API_VERSION_NAMESPACE(v2) {
@@ -30,6 +30,6 @@ using v1::type::size;
 } // MSGPACK_API_VERSION_NAMESPACE(v2)
 /// @endcond
 
-} // namespace clmdep_msgpack
+} // namespace msgpack
 
 #endif // MSGPACK_V2_TYPE_SIZE_EQUAL_ONLY_DECL_HPP
