@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef ASYNC_WRITER_H_HQIRH28I
-#define ASYNC_WRITER_H_HQIRH28I
+#ifndef ASYNC_WRITER_H_RPC
+#define ASYNC_WRITER_H_RPC
 
 #include "rpc/IPC.h"
 #include "rpc/detail/log.h"
@@ -49,4 +49,4 @@ private:
 } /* detail */
 } /* rpc  */
 
-#endif /* end of include guard: ASYNC_WRITER_H_HQIRH28I */
+#endif /* end of include guard: ASYNC_WRITER_H_RPC */

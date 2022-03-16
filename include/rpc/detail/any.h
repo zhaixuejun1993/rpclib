@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef ANY_H_4G3QUOAN
-#define ANY_H_4G3QUOAN
+#ifndef ANY_H_RPC
+#define ANY_H_RPC
 
 #include "rpc/detail/invoke.h"
 #include "rpc/detail/if.h"
@@ -18,4 +18,4 @@ struct any<H, T...> : if_<H, true_, any<T...>> {};
 }
 }
 
-#endif /* end of include guard: ANY_H_4G3QUOAN */
+#endif /* end of include guard: ANY_H_RPC */

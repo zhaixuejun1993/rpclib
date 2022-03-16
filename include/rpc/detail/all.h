@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef ALL_H_H8MAAYCG
-#define ALL_H_H8MAAYCG
+#ifndef ALL_H_RPC
+#define ALL_H_RPC
 
 #include "rpc/detail/invoke.h"
 #include "rpc/detail/if.h"
@@ -23,4 +23,4 @@ struct all<H, T...>
 
 
 
-#endif /* end of include guard: ALL_H_H8MAAYCG */
+#endif /* end of include guard: ALL_H_RPC */
