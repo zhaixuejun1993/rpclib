@@ -49,6 +49,20 @@ configure_file(
   "${PROJECT_SOURCE_DIR}/include/rpc/config.h.in"
   "${PROJECT_SOURCE_DIR}/include/rpc/config.h")
 
+include(FetchContent)
+FetchContent_Declare(
+  msgpack-c
+  GIT_REPOSITORY git@github.com:msgpack/msgpack-c.git
+  GIT_TAG cpp-2.1.5
+  SOURCE_DIR ${PROJECT_SOURCE_DIR}/include/rpc/msgpack-c
+)
+FetchContent_GetProperties(msgpack-c)
+FetchContent_Populate(msgpack-c)
+file(COPY ${PROJECT_SOURCE_DIR}/include/rpc/msgpack-c/include/msgpack 
+  DESTINATION ${PROJECT_SOURCE_DIR}/include/rpc
+)
+file(REMOVE_RECURSE ${PROJECT_SOURCE_DIR}/include/rpc/msgpack-c)
+
 file(GLOB_RECURSE RPCLIB_HEADERS
   include/rpc/*.h
   include/msgpack/*.hpp)
