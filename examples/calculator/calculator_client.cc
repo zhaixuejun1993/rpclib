@@ -19,9 +19,9 @@ int main() {
         double zero = c.call("mul", five, 0).get().as<double>();
         std::cout << zero << std::endl;
 
-        // std::cout << "div(3, 0) = ";
-        // double hmm = c.call("div", 3, 0).as<double>();
-        // std::cout << hmm << std::endl;
+        std::cout << "client send msg(msg from client)";
+        c.call("printInfo", "test msg from client");
+        std::cout << "done" << std::endl;
     } catch (rpc::rpc_error &e) {
         std::cout << std::endl << e.what() << std::endl;
         std::cout << "in function '" << e.get_function_name() << "': ";

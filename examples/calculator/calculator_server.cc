@@ -18,12 +18,15 @@ struct multiplier {
     }
 };
 
+void printInfo(const std::string& msg){
+    std::cout << "Received msg: " << msg << std::endl; 
+}
 int main() {
     rpc::server srv(8080);
     subtractor s;
     multiplier m;
 
-    // It's possible to bind non-capturing lambdas
+    // ... bind non-capturing lambdas
     srv.bind("add", [](double a, double b) { return a + b; });
     // ... arbitrary callables
     srv.bind("sub", s);
@@ -31,7 +34,8 @@ int main() {
     srv.bind("div", &divide);
     // ... member functions with captured instances in lambdas
     srv.bind("mul", [&m](double a, double b) { return m.multiply(a, b); });
-
+    // ... no return value test case
+    srv.bind("printInfo", &printInfo);
     srv.run();
 
     return 0;
