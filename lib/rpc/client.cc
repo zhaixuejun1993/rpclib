@@ -26,10 +26,9 @@ static constexpr uint32_t default_buffer_size =
     rpc::constants::DEFAULT_BUFFER_SIZE;
 
 struct client::impl {
-    impl(client *parent, std::string const &addr, uint16_t port)
+    impl(client *parent, uint16_t port)
         : parent_(parent),
           call_idx_(0),
-          addr_(addr),
           port_(port),
           is_connected_(false),
           state_(client::connection_state::initial),
@@ -63,7 +62,7 @@ struct client::impl {
 
        if(m_connection->getState() == Connection::State::CONNECTED){
            std::unique_lock<std::mutex> lock(mut_connection_finished_);
-           LOG_INFO("Client connected to {}:{}", addr_, port_);
+           LOG_INFO("Client connected to port:{}", port_);
            is_connected_ = true;
            state_ = client::connection_state::connected;
            conn_finished_.notify_all();
@@ -118,7 +117,6 @@ struct client::impl {
     client *parent_;
     std::atomic<int> call_idx_; /// The index of the last call made
     std::unordered_map<uint32_t, call_t> ongoing_calls_;
-    std::string addr_;
     uint16_t port_;
     std::atomic_bool is_connected_;
     std::condition_variable conn_finished_;
@@ -182,8 +180,8 @@ struct client::impl {
     std::thread m_receiveThread;
 };
 
-client::client(std::string const &addr, uint16_t port)
-    : pimpl(new client::impl(this, addr, port)) {
+client::client(uint16_t port)
+    : pimpl(new client::impl(this, port)) {
     pimpl->do_connect();
 }
 
@@ -199,8 +197,8 @@ void client::wait_conn() {
                 lock, std::chrono::milliseconds(*timeout));
             if (result == std::cv_status::timeout) {
                 throw rpc::timeout(RPCLIB_FMT::format(
-                    "Timeout of {}ms while connecting to {}:{}", *get_timeout(),
-                    pimpl->addr_, pimpl->port_));
+                    "Timeout of {}ms while connecting to port:{}", *get_timeout(),
+                    pimpl->port_));
             }
         } else {
             pimpl->conn_finished_.wait(lock);

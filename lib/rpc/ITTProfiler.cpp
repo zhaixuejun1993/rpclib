@@ -1,7 +1,6 @@
-/* *
- * Copyright (C) 2020 Intel Corporation
- * SPDX-License-Identifier: MIT
- */
+// Copyright (C) 2018-2022 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+//
 #include "rpc/ITTProfiler.h"
 
 #ifdef ENABLE_ITT

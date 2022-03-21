@@ -11,7 +11,6 @@
 #include "rpc/detail/dev_utils.h"
 #include "rpc/detail/log.h"
 #include "rpc/detail/server_session.h"
-//#include "rpc/this_server.h"
 #include "rpc/ITTProfiler.h"
 
 using namespace rpc::detail;

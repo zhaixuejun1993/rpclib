@@ -85,7 +85,6 @@ add_library(${PROJECT_NAME}
   lib/rpc/detail/response.cc
   lib/rpc/detail/client_error.cc
   lib/rpc/nonstd/optional.cc
-  lib/rpc/posix.cc
   lib/rpc/format.cc
   ${IPC_SRC}
   ${RPCLIB_HEADERS})
