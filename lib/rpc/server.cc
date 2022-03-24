@@ -11,7 +11,6 @@
 #include "rpc/detail/dev_utils.h"
 #include "rpc/detail/log.h"
 #include "rpc/detail/server_session.h"
-#include "rpc/ITTProfiler.h"
 
 using namespace rpc::detail;
 
@@ -66,7 +65,6 @@ struct server::impl {
     int ipc_index_;
 
     void receiveRoutine() {
-        ITT_PROFILING_TASK("server.ipc.waitEvent");
         while (!m_needStop) {
             auto event = m_poller->waitEvent(100);
             switch (event.type) {

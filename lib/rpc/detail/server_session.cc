@@ -2,7 +2,6 @@
 
 #include "rpc/config.h"
 #include "rpc/server.h"
-#include "rpc/ITTProfiler.h"
 
 #include "rpc/detail/log.h"
 #include <iostream>
@@ -22,7 +21,6 @@ server_ipc_session::server_ipc_session(std::shared_ptr<dispatcher> disp,
             while (!stop_task_) {
                 std::shared_ptr<std::function<void()>> task;
                 {
-                    ITT_PROFILING_TASK("server.task.dequeue");
                     std::unique_lock<std::mutex> lock(task_queue_mutex_);
                     task_queue_not_empty_.wait(lock, [this]() {
                         return !task_queue_.empty() || stop_task_;
@@ -53,7 +51,6 @@ void server_ipc_session::do_read(const rpc::Connection::Ptr &ipcConnection) {
     std::shared_ptr<RPCLIB_MSGPACK::unpacker> message =
         std::make_shared<RPCLIB_MSGPACK::unpacker>();
     {
-        ITT_PROFILING_TASK("server.ipc.read");
         size_t length = 0;
         std::lock_guard<std::mutex> lock(read_mutex_);
         if (!ipcConnection->read(&length, sizeof(length))) {
@@ -78,17 +75,14 @@ void server_ipc_session::do_read(const rpc::Connection::Ptr &ipcConnection) {
     }
 
     {
-        ITT_PROFILING_TASK("server.task.enqueue");
         std::lock_guard<std::mutex> task_lock(task_queue_mutex_);
         task_queue_.push(std::make_shared<std::function<void()>>(
             [this, message, ipcConnection]() {
                 RPCLIB_MSGPACK::unpacked result;
                 while (message->next(result)) {
                     auto msg = result.get();
-                    ITT_PROFILING_TASK("server.dispatch");
                     auto resp = disp_->dispatch(msg, suppress_exceptions_);
                     if (!resp.is_empty()) {
-                        ITT_PROFILING_TASK("server.ipc.write");
                         write(resp.get_data(), *ipcConnection);
                     }
                 }

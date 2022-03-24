@@ -16,7 +16,6 @@
 #include "rpc/detail/async_writer.h"
 #include "rpc/detail/dev_utils.h"
 #include "rpc/detail/response.h"
-#include "rpc/ITTProfiler.h"
 
 using namespace rpc::detail;
 
@@ -78,7 +77,6 @@ struct client::impl {
         RPCLIB_MSGPACK::unpacked result;
         std::lock_guard<std::mutex> lock(m_mutex);
         while (message.next(result)) {
-            ITT_PROFILING_TASK("client.response.deserialize");
             auto r = response(std::move(result));
             auto id = r.get_id();
 
@@ -128,7 +126,6 @@ struct client::impl {
     RPCLIB_CREATE_LOG_CHANNEL(client)
 
     void receiveRoutine() {
-        ITT_PROFILING_TASK("client.ipc.waitEvent");
         while (!m_needStop) {
             auto event = m_poller->waitEvent(100);
             switch (event.type) {
@@ -152,7 +149,6 @@ struct client::impl {
         size_t length = 0;
         RPCLIB_MSGPACK::unpacker message;
         {
-            ITT_PROFILING_TASK("client.ipc.read");
             if (!m_connection->read(&length, sizeof(length))) {
                 return;
             }
@@ -212,12 +208,10 @@ void client::post(std::shared_ptr<RPCLIB_MSGPACK::sbuffer> buffer, int idx,
                   std::string const &func_name,
                   std::shared_ptr<rsp_promise> p) {
     {
-        ITT_PROFILING_TASK("client.add.onging.calls");
         std::lock_guard<std::mutex> lock(pimpl->m_mutex);
         pimpl->ongoing_calls_.insert(
             std::make_pair(idx, std::make_pair(func_name, std::move(*p))));
     }
-    ITT_PROFILING_TASK("client.ipc.write");
     pimpl->write(std::move(*buffer));
 }
 

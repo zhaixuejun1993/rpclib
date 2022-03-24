@@ -13,7 +13,6 @@ include(check_warning_flag)
 option(RPCLIB_ENABLE_LOGGING 
   "ALlow logging in the library for debug purposes."
   OFF)
-option(ENABLE_ITT "Parameter to enable itt tracer" ON)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/configs)
 
@@ -73,14 +72,11 @@ else()
   SET(IPC_SRC lib/rpc/platform/linux/IPC.cpp)
 endif()
 
-add_subdirectory(thirdparty/ittnotify)
-
 add_library(${PROJECT_NAME}
   lib/rpc/dispatcher.cc
   lib/rpc/server.cc
   lib/rpc/client.cc
   lib/rpc/rpc_error.cc
-  lib/rpc/ITTProfiler.cpp
   lib/rpc/detail/server_session.cc
   lib/rpc/detail/response.cc
   lib/rpc/detail/client_error.cc
@@ -105,7 +101,6 @@ if(RPCLIB_ENABLE_LOGGING)
   target_compile_definitions(${PROJECT_NAME} PRIVATE "RPCLIB_ENABLE_LOGGING")
 endif()
 
-target_link_libraries(${PROJECT_NAME} PUBLIC libittprofiler)
 if (WIN32)
   target_link_libraries(${PROJECT_NAME} wsock32 ws2_32)
 endif()
@@ -115,5 +110,5 @@ target_include_directories(
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/rpc>
   $<INSTALL_INTERFACE:include>
   )
-
+  #set_target_output_dirs(${PROJECT_NAME} lib lib bin)
   add_subdirectory(examples/calculator)
